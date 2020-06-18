@@ -1,0 +1,52 @@
+name: Web CI
+
+on:
+  push:
+    paths:
+      - web/**
+      - .github/workflows/webCI.yml
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: yarn install, lint, test
+        working-directory: ./web
+        run: |
+          yarn install
+          yarn lint-app
+        env:
+          CI: true
+
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: yarn build
+        working-directory: ./web
+        run: |
+          yarn install
+          yarn build
+        env:
+          CI: true
