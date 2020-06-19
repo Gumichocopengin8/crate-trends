@@ -41,6 +41,7 @@ const InputForm = (): JSX.Element => {
             inputRef={register({ required: true })}
             defaultValue=""
             autoComplete="off"
+            autoFocus
             endAdornment={
               <InputAdornment position="end">
                 <IconButton type="submit" edge="end">
