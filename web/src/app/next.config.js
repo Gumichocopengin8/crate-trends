@@ -10,6 +10,7 @@ module.exports = {
     config.plugins = [...config.plugins];
 
     config.resolve.alias['components'] = path.join(__dirname, 'components');
+    config.resolve.alias['api'] = path.join(__dirname, 'api');
     return config;
   },
 };
