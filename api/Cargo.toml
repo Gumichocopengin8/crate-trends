@@ -1,5 +1,5 @@
 [package]
-name = "api"
+name = "crates_trends_api"
 version = "0.1.0"
 authors = ["Keita Nonaka <iKonnyaku40@gmail.com>"]
 edition = "2018"
@@ -8,6 +8,6 @@ edition = "2018"
 
 [dependencies]
 actix-web = "2.0.0"
+actix-rt = "1.1.1"
 crates_io_api = "0.6.0"
 serde_json = "1.0.55"
-tokio = "0.2.21"
