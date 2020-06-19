@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import InputForm from 'components/shared/InputForm';
 
 const CratesCompare = (): JSX.Element => {
   const router = useRouter();
@@ -8,7 +9,7 @@ const CratesCompare = (): JSX.Element => {
 
   return (
     <Wrapper>
-      <div>{crate_names}</div>
+      <InputForm />
     </Wrapper>
   );
 };
