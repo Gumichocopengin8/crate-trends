@@ -7,9 +7,9 @@ async fn main() -> std::io::Result<()> {
 
   HttpServer::new(|| {
     App::new().service(
-      web::scope("/crates")
+      web::scope("/api/v1/crates")
         .route("/{id}", web::get().to(get_crate_data))
-        .route("/{id}/downloads", web::get().to(get_crate_downloads)),
+        .route("/{id}/downloads", web::get().to(get_crate_recent_downloads)),
     )
   })
   .bind("127.0.0.1:8080")?
@@ -25,10 +25,10 @@ async fn get_crate_data(path: web::Path<(String,)>) -> HttpResponse {
   }
 }
 
-// get the number of a crate downloads
+// get the number of a crate downloads within last 90 days
 // it doesnt actually download data to local
-async fn get_crate_downloads(path: web::Path<(String,)>) -> HttpResponse {
-  let download_data = fetch_downloads(&path.0).await;
+async fn get_crate_recent_downloads(path: web::Path<(String,)>) -> HttpResponse {
+  let download_data = fetch_recent_downloads(&path.0).await;
   match download_data {
     Ok(value) => HttpResponse::Ok().json(value),
     Err(_) => HttpResponse::Ok().json(()),
@@ -49,7 +49,7 @@ async fn fetch_crate(crate_name: &str) -> Result<crates_io_api::CrateResponse, E
   Ok(full_crate)
 }
 
-async fn fetch_downloads(crate_name: &str) -> Result<crates_io_api::Downloads, Error> {
+async fn fetch_recent_downloads(crate_name: &str) -> Result<crates_io_api::Downloads, Error> {
   // Instantiate the client.
   let client = AsyncClient::new(
     "my-user-agent (my-contact@domain.com)",
