@@ -7,6 +7,7 @@ import { fetchCrateDataUsingGET, fetchDownloadDataUsingGET } from 'api/index';
 import { CrateResponse } from 'interfaces/crate';
 import { Downloads } from 'interfaces/downloads';
 import InputForm from 'components/shared/InputForm';
+import ExtraInfo from 'components/shared/ExtraInfo';
 import CratesTable from 'components/[crate_names]/CratesTable';
 import DownloadChart from 'components/[crate_names]/DownloadChart';
 
@@ -35,6 +36,7 @@ const CratesCompare = ({ cratesData, downloadsData }: Props): JSX.Element => {
       <InputForm />
       <DownloadChart downloadsData={downloadsData} />
       <CratesTable cratesData={cratesData} />
+      <ExtraInfo />
     </Wrapper>
   );
 };

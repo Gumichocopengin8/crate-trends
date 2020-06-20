@@ -24,6 +24,7 @@ const CratesTable = ({ cratesData }: Props): JSX.Element => {
               <TableCell align="right">Updated At</TableCell>
               <TableCell align="right">Created At</TableCell>
               <TableCell align="center">Doc</TableCell>
+              <TableCell align="center">Homepage</TableCell>
               <TableCell align="center">Repo</TableCell>
             </TableRow>
           </TableHead>

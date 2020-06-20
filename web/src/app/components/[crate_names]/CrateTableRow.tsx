@@ -17,6 +17,7 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import DescriptionIcon from '@material-ui/icons/Description';
+import HomeIcon from '@material-ui/icons/Home';
 import { CrateResponse, Version } from 'interfaces/crate';
 
 interface Props {
@@ -37,7 +38,7 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          <Link href={crateData.crate.homepage} rel="noreferrer">
+          <Link href={`https://crates.io/crates/${crateData.crate.name}`} rel="noreferrer">
             {crateData.crate.name}
           </Link>
         </TableCell>
@@ -49,6 +50,15 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
           {crateData.crate.documentation ? (
             <Link href={crateData.crate.documentation} rel="noreferrer">
               <DescriptionIcon />
+            </Link>
+          ) : (
+            '-'
+          )}
+        </TableCell>
+        <TableCell align="center">
+          {crateData.crate.homepage ? (
+            <Link href={crateData.crate.homepage} rel="noreferrer">
+              <HomeIcon />
             </Link>
           ) : (
             '-'
