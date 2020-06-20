@@ -1,16 +1,30 @@
-use actix_web::{web, App, HttpResponse, HttpServer};
+use actix_cors::Cors;
+use actix_web::{http::header, middleware::Logger, web, App, HttpResponse, HttpServer};
 use crates_io_api::{AsyncClient, Error};
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
   println!("http://localhost:8080");
+  std::env::set_var("RUST_LOG", "actix_web=info");
+  env_logger::init();
 
   HttpServer::new(|| {
-    App::new().service(
-      web::scope("/api/v1/crates")
-        .route("/{id}", web::get().to(get_crate_data))
-        .route("/{id}/downloads", web::get().to(get_crate_recent_downloads)),
-    )
+    App::new()
+      .wrap(
+        Cors::new()
+          .allowed_origin("http://localhost:3000")
+          .allowed_methods(vec!["GET"])
+          .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
+          .allowed_header(header::CONTENT_TYPE)
+          .max_age(3600)
+          .finish(),
+      )
+      .wrap(Logger::default())
+      .service(
+        web::scope("/api/v1/crates")
+          .route("/{id}", web::get().to(get_crate_data))
+          .route("/{id}/downloads", web::get().to(get_crate_recent_downloads)),
+      )
   })
   .bind("127.0.0.1:8080")?
   .run()
