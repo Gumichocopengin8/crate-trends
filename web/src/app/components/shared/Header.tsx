@@ -19,6 +19,7 @@ const Wrapper = styled.header`
 `;
 
 const HeaderTitle = styled.h1`
+  width: fit-content;
   margin: 0;
   font-size: 1.75rem;
   font-weight: normal;

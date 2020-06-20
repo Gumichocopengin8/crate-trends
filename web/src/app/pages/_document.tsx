@@ -22,7 +22,7 @@ export default class MyDocument extends Document {
           }`}</style>
 
           <title>Crate Trends</title>
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/ferris.png" type="image/png" />
         </Head>
         <body className="custom_class">
           <Main />
