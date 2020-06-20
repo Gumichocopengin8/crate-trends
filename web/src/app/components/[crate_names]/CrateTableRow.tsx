@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import {
   Table,
   TableBody,
@@ -25,7 +25,7 @@ interface Props {
 
 const CrateTableRow = ({ crateData }: Props): JSX.Element => {
   const [open, setOpen] = React.useState<boolean>(false);
-  const dateFormat = (date: Date): string => dayjs(date).format('MMM DD, YYYY');
+  const dateFormat = (date: Date): string => moment(date).format('MMM DD, YYYY');
   const onOpen = () => setOpen((state) => !state);
 
   return (
