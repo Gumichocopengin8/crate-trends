@@ -7,7 +7,7 @@ const Header = (): JSX.Element => {
     <Wrapper>
       <Link href="/">
         <HeaderTitle>
-          <span className="crab">🦀</span> Crates Trends
+          <span className="crab">🦀</span> Crate Trends
         </HeaderTitle>
       </Link>
     </Wrapper>
@@ -19,6 +19,7 @@ const Wrapper = styled.header`
 `;
 
 const HeaderTitle = styled.h1`
+  width: fit-content;
   margin: 0;
   font-size: 1.75rem;
   font-weight: normal;

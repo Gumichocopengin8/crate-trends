@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import {
   Table,
   TableBody,
@@ -17,15 +17,16 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import DescriptionIcon from '@material-ui/icons/Description';
+import HomeIcon from '@material-ui/icons/Home';
 import { CrateResponse, Version } from 'interfaces/crate';
 
 interface Props {
-  data: CrateResponse;
+  crateData: CrateResponse;
 }
 
-const CrateTableRow = ({ data }: Props): JSX.Element => {
+const CrateTableRow = ({ crateData }: Props): JSX.Element => {
   const [open, setOpen] = React.useState<boolean>(false);
-  const dateFormat = (date: Date): string => dayjs(date).format('MMM DD, YYYY');
+  const dateFormat = (date: Date): string => moment(date).format('MMM DD, YYYY');
   const onOpen = () => setOpen((state) => !state);
 
   return (
@@ -37,17 +38,17 @@ const CrateTableRow = ({ data }: Props): JSX.Element => {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          <Link href={data.crate.homepage} rel="noreferrer">
-            {data.crate.name}
+          <Link href={`https://crates.io/crates/${crateData.crate.name}`} rel="noreferrer">
+            {crateData.crate.name}
           </Link>
         </TableCell>
-        <TableCell align="right">{data.crate.downloads.toLocaleString()}</TableCell>
-        <TableCell align="right">{data.crate.recent_downloads.toLocaleString()}</TableCell>
-        <TableCell align="right">{dateFormat(data.crate.updated_at)}</TableCell>
-        <TableCell align="right">{dateFormat(data.crate.created_at)}</TableCell>
+        <TableCell align="right">{crateData.crate.downloads.toLocaleString()}</TableCell>
+        <TableCell align="right">{crateData.crate.recent_downloads.toLocaleString()}</TableCell>
+        <TableCell align="right">{dateFormat(crateData.crate.updated_at)}</TableCell>
+        <TableCell align="right">{dateFormat(crateData.crate.created_at)}</TableCell>
         <TableCell align="center">
-          {data.crate.documentation ? (
-            <Link href={data.crate.documentation} rel="noreferrer">
+          {crateData.crate.documentation ? (
+            <Link href={crateData.crate.documentation} rel="noreferrer">
               <DescriptionIcon />
             </Link>
           ) : (
@@ -55,8 +56,17 @@ const CrateTableRow = ({ data }: Props): JSX.Element => {
           )}
         </TableCell>
         <TableCell align="center">
-          {data.crate.repository ? (
-            <Link color="inherit" href={data.crate.repository} rel="noreferrer">
+          {crateData.crate.homepage ? (
+            <Link href={crateData.crate.homepage} rel="noreferrer">
+              <HomeIcon />
+            </Link>
+          ) : (
+            '-'
+          )}
+        </TableCell>
+        <TableCell align="center">
+          {crateData.crate.repository ? (
+            <Link color="inherit" href={crateData.crate.repository} rel="noreferrer">
               <GitHubIcon />
             </Link>
           ) : (
@@ -69,7 +79,7 @@ const CrateTableRow = ({ data }: Props): JSX.Element => {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="subtitle1" gutterBottom>
-                Description: {data.crate.description ?? '-'}
+                Description: {crateData.crate.description ?? '-'}
               </Typography>
               <Typography variant="subtitle1" gutterBottom component="h3">
                 Versions:
@@ -87,7 +97,7 @@ const CrateTableRow = ({ data }: Props): JSX.Element => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data.versions.map((version: Version) => (
+                  {crateData.versions.map((version: Version) => (
                     <TableRow key={version.id}>
                       <TableCell>{version.num}</TableCell>
                       <TableCell align="right">{version.downloads.toLocaleString()}</TableCell>

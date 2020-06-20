@@ -20,6 +20,8 @@ export default class MyDocument extends Document {
           input {
             outline: 0;
           }`}</style>
+
+          <link rel="icon" href="/ferris.png" type="image/png" />
         </Head>
         <body className="custom_class">
           <Main />
