@@ -1,0 +1,1 @@
+web: ./target/release/crates_trends_api
