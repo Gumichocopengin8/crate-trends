@@ -7,7 +7,7 @@ const Header = (): JSX.Element => {
     <Wrapper>
       <Link href="/">
         <HeaderTitle>
-          <span className="crab">🦀</span> Crates Trends
+          <span className="crab">🦀</span> Crate Trends
         </HeaderTitle>
       </Link>
     </Wrapper>

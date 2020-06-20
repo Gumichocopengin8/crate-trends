@@ -20,6 +20,9 @@ export default class MyDocument extends Document {
           input {
             outline: 0;
           }`}</style>
+
+          <title>Crate Trends</title>
+          <link rel="icon" href="/favicon.ico" />
         </Head>
         <body className="custom_class">
           <Main />
