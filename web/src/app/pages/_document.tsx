@@ -21,7 +21,6 @@ export default class MyDocument extends Document {
             outline: 0;
           }`}</style>
 
-          <title>Crate Trends</title>
           <link rel="icon" href="/ferris.png" type="image/png" />
         </Head>
         <body className="custom_class">

@@ -1,16 +1,18 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
-
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@material-ui/core';
 import { CrateResponse } from 'interfaces/crate';
 import CrateTableRow from './CrateTableRow';
 
 interface Props {
-  data: CrateResponse[];
+  cratesData: CrateResponse[];
 }
 
-const CratesTable = ({ data }: Props): JSX.Element => {
+const CratesTable = ({ cratesData }: Props): JSX.Element => {
   return (
     <div>
+      <Typography variant="h6" gutterBottom>
+        Stats
+      </Typography>
       <TableContainer variant="outlined" component={Paper}>
         <Table>
           <TableHead>
@@ -26,8 +28,8 @@ const CratesTable = ({ data }: Props): JSX.Element => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((crate) => (
-              <CrateTableRow key={crate.crate.id} data={crate} />
+            {cratesData.map((crate) => (
+              <CrateTableRow key={crate.crate.id} crateData={crate} />
             ))}
           </TableBody>
         </Table>

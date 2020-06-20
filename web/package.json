@@ -18,12 +18,13 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^5.7.2",
-    "react-vis": "^1.11.7",
+    "recharts": "^1.8.5",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
     "@types/node": "^14.0.13",
     "@types/react": "^16.9.38",
+    "@types/recharts": "^1.8.12",
     "@types/styled-components": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^3.3.0",
     "@typescript-eslint/parser": "^3.3.0",
