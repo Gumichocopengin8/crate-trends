@@ -6,7 +6,9 @@ const Header = (): JSX.Element => {
   return (
     <Wrapper>
       <Link href="/">
-        <HeaderTitle>🦀 Crates Trends</HeaderTitle>
+        <HeaderTitle>
+          <span className="crab">🦀</span> Crates Trends
+        </HeaderTitle>
       </Link>
     </Wrapper>
   );
@@ -21,6 +23,23 @@ const HeaderTitle = styled.h1`
   font-size: 1.75rem;
   font-weight: normal;
   cursor: pointer;
+
+  &:hover > .crab {
+    animation: crab-animetion 2s linear infinite;
+  }
+
+  .crab {
+    display: inline-block;
+  }
+
+  @keyframes crab-animetion {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 export default Header;
