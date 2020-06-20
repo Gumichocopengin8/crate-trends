@@ -17,11 +17,12 @@ const CratesTable = ({ data }: Props): JSX.Element => {
             <TableRow>
               <TableCell />
               <TableCell>Name</TableCell>
-              <TableCell>Total Downloads</TableCell>
-              <TableCell>Updated At</TableCell>
-              <TableCell>Created At</TableCell>
-              <TableCell>Doc</TableCell>
-              <TableCell>Repo</TableCell>
+              <TableCell align="right">Total Downloads</TableCell>
+              <TableCell align="right">Recent Downloads</TableCell>
+              <TableCell align="right">Updated At</TableCell>
+              <TableCell align="right">Created At</TableCell>
+              <TableCell align="center">Doc</TableCell>
+              <TableCell align="center">Repo</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

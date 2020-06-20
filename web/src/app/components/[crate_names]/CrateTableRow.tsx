@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import dayjs from 'dayjs';
 import {
   Table,
@@ -24,13 +25,12 @@ interface Props {
 
 const CrateTableRow = ({ data }: Props): JSX.Element => {
   const [open, setOpen] = React.useState<boolean>(false);
-  const dateFormat = (date: Date) => dayjs(date).format('MMM DD, YYYY');
+  const dateFormat = (date: Date): string => dayjs(date).format('MMM DD, YYYY');
   const onOpen = () => setOpen((state) => !state);
 
-  console.log(data);
   return (
     <>
-      <TableRow key={data.crate.id}>
+      <RootTableRow>
         <TableCell padding="checkbox">
           <IconButton size="small" onClick={onOpen}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -41,10 +41,11 @@ const CrateTableRow = ({ data }: Props): JSX.Element => {
             {data.crate.name}
           </Link>
         </TableCell>
-        <TableCell>{data.crate.downloads.toLocaleString()}</TableCell>
-        <TableCell>{dateFormat(data.crate.updated_at)}</TableCell>
-        <TableCell>{dateFormat(data.crate.created_at)}</TableCell>
-        <TableCell>
+        <TableCell align="right">{data.crate.downloads.toLocaleString()}</TableCell>
+        <TableCell align="right">{data.crate.recent_downloads.toLocaleString()}</TableCell>
+        <TableCell align="right">{dateFormat(data.crate.updated_at)}</TableCell>
+        <TableCell align="right">{dateFormat(data.crate.created_at)}</TableCell>
+        <TableCell align="center">
           {data.crate.documentation ? (
             <Link href={data.crate.documentation} rel="noreferrer">
               <DescriptionIcon />
@@ -53,7 +54,7 @@ const CrateTableRow = ({ data }: Props): JSX.Element => {
             '-'
           )}
         </TableCell>
-        <TableCell>
+        <TableCell align="center">
           {data.crate.repository ? (
             <Link color="inherit" href={data.crate.repository} rel="noreferrer">
               <GitHubIcon />
@@ -62,13 +63,16 @@ const CrateTableRow = ({ data }: Props): JSX.Element => {
             '-'
           )}
         </TableCell>
-      </TableRow>
+      </RootTableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="h3">
-                Versions
+              <Typography variant="subtitle1" gutterBottom>
+                Description: {data.crate.description ?? '-'}
+              </Typography>
+              <Typography variant="subtitle1" gutterBottom component="h3">
+                Versions:
               </Typography>
               <Table size="small">
                 <TableHead>
@@ -78,7 +82,7 @@ const CrateTableRow = ({ data }: Props): JSX.Element => {
                     <TableCell>Created At</TableCell>
                     <TableCell>Yanked</TableCell>
                     <TableCell>License</TableCell>
-                    <TableCell>Size</TableCell>
+                    <TableCell>Size (byte)</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -101,5 +105,13 @@ const CrateTableRow = ({ data }: Props): JSX.Element => {
     </>
   );
 };
+
+const RootTableRow = styled(TableRow)`
+  &&& {
+    & > * {
+      border-bottom: unset;
+    }
+  }
+`;
 
 export default CrateTableRow;

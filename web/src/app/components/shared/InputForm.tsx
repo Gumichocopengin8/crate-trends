@@ -42,6 +42,7 @@ const InputForm = (): JSX.Element => {
             defaultValue=""
             autoComplete="off"
             autoFocus
+            style={{ marginBottom: '1rem' }}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton type="submit" edge="end">
