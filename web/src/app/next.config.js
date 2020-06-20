@@ -11,6 +11,7 @@ module.exports = {
 
     config.resolve.alias['components'] = path.join(__dirname, 'components');
     config.resolve.alias['api'] = path.join(__dirname, 'api');
+    config.resolve.alias['interfaces'] = path.join(__dirname, 'interfaces');
     return config;
   },
 };

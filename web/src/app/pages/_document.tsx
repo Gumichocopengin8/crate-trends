@@ -7,15 +7,15 @@ export default class MyDocument extends Document {
     return { ...initialProps };
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <html>
         <Head>
-          <style>{`body { 
+          <style>{`body {
             margin: 0;
             padding: 0;
             font-family: Arial, Helvetica, sans-serif;
-            overflow: hidden;
+            overflow-y: scroll;
           }
           input {
             outline: 0;

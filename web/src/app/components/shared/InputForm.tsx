@@ -25,7 +25,7 @@ const InputForm = (): JSX.Element => {
       </Typography>
       <Typography variant="body1" gutterBottom>
         You can find crates from{' '}
-        <Link href="https://crates.io/" rel="noreferrer" target="_blank">
+        <Link href="https://crates.io/" rel="noreferrer">
           crates.io
         </Link>
       </Typography>

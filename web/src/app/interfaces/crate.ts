@@ -1,6 +1,6 @@
 export interface CrateResponse {
   categories: Category[];
-  crate_data: Crate;
+  crate: Crate;
   keywords: Keyword[];
   versions: Version[];
 }

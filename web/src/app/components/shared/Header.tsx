@@ -6,7 +6,7 @@ const Header = (): JSX.Element => {
   return (
     <Wrapper>
       <Link href="/">
-        <HeaderTitle>Crates Trends</HeaderTitle>
+        <HeaderTitle>🦀 Crates Trends</HeaderTitle>
       </Link>
     </Wrapper>
   );
