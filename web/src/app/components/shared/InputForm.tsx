@@ -12,9 +12,12 @@ const InputForm = (): JSX.Element => {
   const router = useRouter();
   const { crate_names } = router.query;
   const { register, handleSubmit, reset } = useForm<FormData>();
+
   const onSubmit = ({ crateNameInput }: FormData) => {
-    const cratesNames = crate_names ? `${crate_names}+${crateNameInput}` : crateNameInput;
-    router.push('/[crate_names]', `/${cratesNames}`);
+    const param = crate_names ? String(crate_names).split('+') : [];
+    param.push(crateNameInput);
+    const cratesNames: string[] = Array.from(new Set(param)); // somehome spread op not working
+    router.push('/[crate_names]', `/${cratesNames.join('+')}`);
     reset({ crateNameInput: '' });
   };
 

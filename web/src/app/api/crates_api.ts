@@ -6,6 +6,7 @@ export const fetchCrateDataUsingGET = async (crateName: string): Promise<CrateRe
     .get(`${cratesURL}/${crateName}`)
     .then((res) => res.data as CrateResponse)
     .catch((err) => {
-      throw new Error(err);
+      console.error(err);
+      return null;
     });
 };

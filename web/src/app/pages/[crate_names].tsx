@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { fetchCrateDataUsingGET } from 'api/index';
 import { CrateResponse } from 'interfaces/crate';
@@ -11,6 +12,14 @@ type Props = {
 };
 
 const CratesCompare = ({ data }: Props): JSX.Element => {
+  const router = useRouter();
+
+  useEffect(() => {
+    // fix url param
+    const path = data.map((d) => d.crate.id);
+    router.push('/[crate_names]', `/${path.join('+')}`);
+  });
+
   return (
     <Wrapper>
       <InputForm />
@@ -21,7 +30,7 @@ const CratesCompare = ({ data }: Props): JSX.Element => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const crateNames = context.params.crate_names.toString().split('+');
-  const requests = crateNames.map((name) => fetchCrateDataUsingGET(name));
+  const requests = Array.from(new Set(crateNames)).map((name) => fetchCrateDataUsingGET(name));
   const results = await Promise.all(requests);
   const data = results.filter((v) => v);
   return { props: { data } };

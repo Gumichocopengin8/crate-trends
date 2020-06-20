@@ -78,22 +78,24 @@ const CrateTableRow = ({ data }: Props): JSX.Element => {
                 <TableHead>
                   <TableRow>
                     <TableCell>Version Num</TableCell>
-                    <TableCell>Updated At</TableCell>
-                    <TableCell>Created At</TableCell>
-                    <TableCell>Yanked</TableCell>
-                    <TableCell>License</TableCell>
-                    <TableCell>Size (byte)</TableCell>
+                    <TableCell align="right">Downloads</TableCell>
+                    <TableCell align="right">Updated At</TableCell>
+                    <TableCell align="right">Created At</TableCell>
+                    <TableCell align="right">Yanked</TableCell>
+                    <TableCell align="right">License</TableCell>
+                    <TableCell align="right">Size (byte)</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {data.versions.map((version: Version) => (
                     <TableRow key={version.id}>
                       <TableCell>{version.num}</TableCell>
-                      <TableCell>{dateFormat(version.updated_at)}</TableCell>
-                      <TableCell>{dateFormat(version.created_at)}</TableCell>
-                      <TableCell>{version.yanked.toString()}</TableCell>
-                      <TableCell>{version.license ?? '-'}</TableCell>
-                      <TableCell>{version.crate_size ?? '-'}</TableCell>
+                      <TableCell align="right">{version.downloads.toLocaleString()}</TableCell>
+                      <TableCell align="right">{dateFormat(version.updated_at)}</TableCell>
+                      <TableCell align="right">{dateFormat(version.created_at)}</TableCell>
+                      <TableCell align="right">{version.yanked.toString()}</TableCell>
+                      <TableCell align="right">{version.license ?? '-'}</TableCell>
+                      <TableCell align="right">{version.crate_size ?? '-'}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
