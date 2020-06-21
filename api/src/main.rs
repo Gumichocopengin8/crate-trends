@@ -4,20 +4,31 @@ use crates_io_api::{AsyncClient, Error};
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
-  println!("http://localhost:8080");
   std::env::set_var("RUST_LOG", "actix_web=info");
   env_logger::init();
 
-  let port = std::env::var("PORT")
+  let host: String = std::env::var("HOST")
+    .unwrap_or_else(|_| "0.0.0.0".to_string())
+    .parse()
+    .expect("HOST must be a string");
+
+  let port: u16 = std::env::var("PORT")
     .unwrap_or_else(|_| "8080".to_string())
     .parse()
     .expect("PORT must be a number");
+
+  if host == "127.0.0.1" {
+    println!("Server Start: http://localhost:{}", port);
+  } else {
+    println!("{}:{}", host, port);
+  }
 
   HttpServer::new(|| {
     App::new()
       .wrap(
         Cors::new()
           .allowed_origin("http://localhost:3000")
+          .allowed_origin("https://crate-trends.herokuapp.com")
           .allowed_methods(vec!["GET"])
           .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
           .allowed_header(header::CONTENT_TYPE)
@@ -25,15 +36,20 @@ async fn main() -> std::io::Result<()> {
           .finish(),
       )
       .wrap(Logger::default())
+      .route("/up", web::get().to(index))
       .service(
         web::scope("/api/v1/crates")
           .route("/{id}", web::get().to(get_crate_data))
           .route("/{id}/downloads", web::get().to(get_crate_recent_downloads)),
       )
   })
-  .bind(("0.0.0.0", port))?
+  .bind(format!("{}:{}", host, port))?
   .run()
   .await
+}
+
+async fn index() -> HttpResponse {
+  HttpResponse::Ok().body("You're up!!")
 }
 
 async fn get_crate_data(path: web::Path<(String,)>) -> HttpResponse {
