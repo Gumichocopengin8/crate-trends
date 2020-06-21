@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2020-Present, Keita Nonaka
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import { axios, cratesURL } from './api_config';
 import { CrateResponse } from 'interfaces/crate';
 import { Downloads } from 'interfaces/downloads';

@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2020-Present, Keita Nonaka
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@material-ui/core';
 import { CrateResponse } from 'interfaces/crate';
