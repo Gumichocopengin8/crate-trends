@@ -12,11 +12,11 @@ import InputForm from 'components/shared/InputForm';
 import ExtraInfo from 'components/shared/ExtraInfo';
 
 const Index = (): JSX.Element => {
-  console.log(process.env.BASE_URL, 'sex');
   return (
     <Wrapper>
       <Head>
         <title>Crate Trends</title>
+        <meta name="google-site-verification" content="koqh25055ZnqyD5EXDbfBKNBI9TtoklhiGvSLAjOgD0" />
       </Head>
       <InputForm />
       <ExtraInfo />
