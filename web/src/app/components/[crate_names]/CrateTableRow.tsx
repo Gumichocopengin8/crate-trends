@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import moment from 'moment';
 import {
@@ -25,6 +26,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import DescriptionIcon from '@material-ui/icons/Description';
 import HomeIcon from '@material-ui/icons/Home';
+import CloseIcon from '@material-ui/icons/Close';
 import { CrateResponse, Version } from 'interfaces/crate';
 
 interface Props {
@@ -32,9 +34,18 @@ interface Props {
 }
 
 const CrateTableRow = ({ crateData }: Props): JSX.Element => {
+  const router = useRouter();
+  const { crate_names } = router.query;
   const [open, setOpen] = React.useState<boolean>(false);
   const dateFormat = (date: Date): string => moment(date).format('MMM DD, YYYY');
   const onOpen = () => setOpen((state) => !state);
+
+  const onRemoveCrate = () => {
+    const newCratesArr = String(crate_names)
+      .split('+')
+      .filter((v) => v !== crateData.crate.name);
+    router.push('/[crate_names]', `/${newCratesArr.join('+')}`);
+  };
 
   return (
     <>
@@ -79,6 +90,11 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
           ) : (
             '-'
           )}
+        </TableCell>
+        <TableCell>
+          <IconButton size="small" onClick={onRemoveCrate}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
         </TableCell>
       </RootTableRow>
       <TableRow>
@@ -127,6 +143,8 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
 
 const RootTableRow = styled(TableRow)`
   &&& {
+    background: #f5fffe;
+
     & > * {
       border-bottom: unset;
     }
