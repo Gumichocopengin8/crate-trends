@@ -8,7 +8,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
 
-const isDev = process.env.NODE_ENV;
+const isDev = process.env.ENVIRONMENT === 'product_env';
 
 module.exports = {
   distDir: '../../build/next',
