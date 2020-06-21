@@ -33,6 +33,7 @@ const CratesTable = ({ cratesData }: Props): JSX.Element => {
               <TableCell align="center">Doc</TableCell>
               <TableCell align="center">Homepage</TableCell>
               <TableCell align="center">Repo</TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
