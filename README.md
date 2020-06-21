@@ -1,8 +1,15 @@
-# Crates Trends
+# Crate Trends
+
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+
+Crate Trends helps compare multiple Rust Packages
 
 ## Description
 
-This helps to compare multiple Rust Packages known as Crates.
+[Crate Trends](https://crate-trends.herokuapp.com/) 🦀🦀
+
+Although Crates.io is a useful tool to find crates, it is difficult to compare multiple crates in term of a number of downloads, license, updated dates, etc...
+Crate Trends solve the problems.
 
 ## Contribute
 

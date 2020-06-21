@@ -1,6 +1,6 @@
 [package]
-name = "crates_trends_api"
-version = "0.1.0"
+name = "crate_trends_api"
+version = "1.0.0"
 authors = ["Keita Nonaka <iKonnyaku40@gmail.com>"]
 edition = "2018"
 
