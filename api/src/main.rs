@@ -8,6 +8,11 @@ async fn main() -> std::io::Result<()> {
   std::env::set_var("RUST_LOG", "actix_web=info");
   env_logger::init();
 
+  let port = std::env::var("PORT")
+    .unwrap_or_else(|_| "8080".to_string())
+    .parse()
+    .expect("PORT must be a number");
+
   HttpServer::new(|| {
     App::new()
       .wrap(
@@ -26,7 +31,7 @@ async fn main() -> std::io::Result<()> {
           .route("/{id}/downloads", web::get().to(get_crate_recent_downloads)),
       )
   })
-  .bind("127.0.0.1:8080")?
+  .bind(("0.0.0.0", port))?
   .run()
   .await
 }
