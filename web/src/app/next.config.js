@@ -8,13 +8,13 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
 
-const isDev = process.env.ENVIRONMENT === 'product_env';
+const isProd = process.env.ENVIRONMENT === 'product_env';
 
 module.exports = {
   distDir: '../../build/next',
 
   env: {
-    BASE_URL: isDev ? 'http://localhost:8080/api/v1' : process.env.BASE_URL,
+    BASE_URL: isProd ? process.env.BASE_URL : 'http://localhost:8080/api/v1',
   },
 
   webpack(config, options) {

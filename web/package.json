@@ -52,6 +52,9 @@
       "prettier --write"
     ]
   },
+  "engines": {
+    "node": "14.0.0"
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
