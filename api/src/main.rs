@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2020-Present, Keita Nonaka
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 use actix_cors::Cors;
 use actix_web::{http::header, middleware::Logger, web, App, HttpResponse, HttpServer};
 use crates_io_api::{AsyncClient, Error};

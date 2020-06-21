@@ -11,7 +11,7 @@ Crate Trends helps compare multiple Rust Packages
 Although Crates.io is a useful tool to find crates, it is difficult to compare multiple crates in term of a number of downloads, license, updated dates, etc...
 Crate Trends solve the problems.
 
-## Contribute
+## Contributing
 
 Anyone is welcome to contribute to this repository.
 
@@ -19,3 +19,7 @@ Anyone is welcome to contribute to this repository.
 - If you intend to fix bugs or add features, please fork this repository and submit pull requests.
 
 Any kinds of contributions are welcome!!
+
+### License
+
+Crate Trends is MIT licensed
