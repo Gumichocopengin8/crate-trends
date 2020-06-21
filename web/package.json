@@ -1,6 +1,6 @@
 {
-  "name": "crates-trends-web",
-  "version": "0.1.0",
+  "name": "crate-trends-web",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next ./src/app",

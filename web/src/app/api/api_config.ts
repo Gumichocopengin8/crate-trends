@@ -1,6 +1,6 @@
 import axiosBase from 'axios';
 
-const urlBase = 'http://localhost:8080/api/v1';
+const urlBase = process.env.BASE_URL;
 const headers = {
   'Content-Type': 'application/json',
   // 'X-Requested-With': 'XMLHttpRequest',

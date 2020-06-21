@@ -1,1 +1,1 @@
-web: ./target/release/crates_trends_api
+web: ./target/release/crate_trends_api
