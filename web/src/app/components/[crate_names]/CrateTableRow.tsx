@@ -44,6 +44,10 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
     const newCratesArr = String(crate_names)
       .split('+')
       .filter((v) => v !== crateData.crate.name);
+    if (newCratesArr.length === 0) {
+      router.push('/');
+      return;
+    }
     router.push('/[crate_names]', `/${newCratesArr.join('+')}`);
   };
 
