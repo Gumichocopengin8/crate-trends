@@ -35,12 +35,12 @@ const CratesCompare = ({ cratesData, downloadsData }: Props): JSX.Element => {
     } else if (String(crate_names).split('+').length !== crateIds.length) {
       router.push('/[crate_names]', `/${crateIds.join('+')}`);
     }
-  });
+  }, [cratesData]);
 
   return (
     <Wrapper>
       <Head>
-        <title>Crate Trends</title>
+        <title>Crate Trends | Results</title>
       </Head>
       <InputForm />
       <DownloadChart downloadsData={downloadsData} />

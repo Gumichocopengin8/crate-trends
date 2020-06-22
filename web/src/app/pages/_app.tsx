@@ -5,35 +5,31 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import App from 'next/app';
+import React, { useEffect } from 'react';
+import { AppProps } from 'next/app';
 import styled from 'styled-components';
 import Header from 'components/shared/Header';
 import Footer from 'components/shared/Footer';
 
-export default class MyApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
+const MyApp = (props: AppProps): JSX.Element => {
+  const { Component, pageProps } = props;
 
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+  useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
     }
+  }, []);
 
-    return { pageProps };
-  }
-
-  render(): JSX.Element {
-    const { Component, pageProps } = this.props;
-
-    return (
-      <Wrapper>
-        <Header />
-        <Component {...pageProps} />
-        <Footer />
-      </Wrapper>
-    );
-  }
-}
+  return (
+    <Wrapper>
+      <Header />
+      <Component {...pageProps} />
+      <Footer />
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -45,3 +41,5 @@ const Wrapper = styled.div`
     padding: 0 1rem;
   }
 `;
+
+export default MyApp;

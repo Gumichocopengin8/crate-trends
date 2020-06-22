@@ -93,9 +93,6 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
       <Typography variant="h6" component="h3" gutterBottom>
         Recent Daily Downloads (90days)
       </Typography>
-      <Typography variant="caption" gutterBottom>
-        Currently plot chart of first crate
-      </Typography>
       <CrateDownloadChart>
         <ResponsiveContainer>
           <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>

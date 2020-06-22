@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -36,7 +36,7 @@ interface Props {
 const CrateTableRow = ({ crateData }: Props): JSX.Element => {
   const router = useRouter();
   const { crate_names } = router.query;
-  const [open, setOpen] = React.useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
   const dateFormat = (date: Date): string => moment(date).format('MMM DD, YYYY');
   const onOpen = () => setOpen((state) => !state);
 
@@ -46,9 +46,9 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
       .filter((v) => v !== crateData.crate.name);
     if (newCratesArr.length === 0) {
       router.push('/');
-      return;
+    } else {
+      router.push('/[crate_names]', `/${newCratesArr.join('+')}`);
     }
-    router.push('/[crate_names]', `/${newCratesArr.join('+')}`);
   };
 
   return (
