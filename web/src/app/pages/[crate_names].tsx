@@ -40,7 +40,7 @@ const CratesCompare = ({ cratesData, downloadsData }: Props): JSX.Element => {
   return (
     <Wrapper>
       <Head>
-        <title>Crate Trends</title>
+        <title>Crate Trends | Results</title>
       </Head>
       <InputForm />
       <DownloadChart downloadsData={downloadsData} />
