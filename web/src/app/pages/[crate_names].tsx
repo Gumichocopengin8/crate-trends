@@ -29,9 +29,11 @@ const CratesCompare = ({ cratesData, downloadsData }: Props): JSX.Element => {
 
   useEffect(() => {
     // fix url param
-    const path = cratesData.map((d) => d.crate.id);
-    if (String(crate_names).split('+').length !== path.length) {
-      router.push('/[crate_names]', `/${path.join('+')}`);
+    const crateIds = cratesData.map((d) => d.crate.id);
+    if (crateIds.length === 0) {
+      router.push('/');
+    } else if (String(crate_names).split('+').length !== crateIds.length) {
+      router.push('/[crate_names]', `/${crateIds.join('+')}`);
     }
   });
 
