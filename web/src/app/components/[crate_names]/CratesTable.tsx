@@ -17,7 +17,7 @@ interface Props {
 const CratesTable = ({ cratesData }: Props): JSX.Element => {
   return (
     <div>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" component="h3" gutterBottom>
         Stats
       </Typography>
       <TableContainer variant="outlined" component={Paper}>
