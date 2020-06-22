@@ -41,7 +41,6 @@ const CratesCompare = ({ cratesData, downloadsData }: Props): JSX.Element => {
     <Wrapper>
       <Head>
         <title>Crate Trends</title>
-        <meta name="google-site-verification" content="koqh25055ZnqyD5EXDbfBKNBI9TtoklhiGvSLAjOgD0" />
       </Head>
       <InputForm />
       <DownloadChart downloadsData={downloadsData} />

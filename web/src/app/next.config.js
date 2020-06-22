@@ -15,6 +15,7 @@ module.exports = {
 
   env: {
     BASE_URL: isProd ? process.env.BASE_URL : 'http://localhost:8080/api/v1',
+    GOOGLE_ANALYTICS_TAG_ID: process.env.GOOGLE_ANALYTICS_TAG_ID ?? '',
   },
 
   webpack(config, options) {
