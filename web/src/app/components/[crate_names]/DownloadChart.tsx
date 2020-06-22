@@ -53,14 +53,13 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
             })
             .filter((v) => v)
             .reduce((uniformedDateData, currentValue) => {
-              if (uniformedDateData.date === currentValue.date) {
-                uniformedDateData = {
-                  date: currentValue.date,
-                  downloads: uniformedDateData.downloads + currentValue.downloads,
-                };
-              } else {
-                uniformedDateData = { date: currentValue.date, downloads: currentValue.downloads };
-              }
+              uniformedDateData =
+                uniformedDateData.date === currentValue.date
+                  ? {
+                      date: currentValue.date,
+                      downloads: uniformedDateData.downloads + currentValue.downloads,
+                    }
+                  : { date: currentValue.date, downloads: currentValue.downloads };
               return uniformedDateData;
             }, {} as CustomUniformedData)
         )
