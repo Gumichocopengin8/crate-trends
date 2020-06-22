@@ -89,7 +89,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
   };
 
   return (
-    <>
+    <section>
       <Typography variant="h6" component="h3" gutterBottom>
         Recent Daily Downloads (90days)
       </Typography>
@@ -117,7 +117,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
           </LineChart>
         </ResponsiveContainer>
       </CrateDownloadChart>
-    </>
+    </section>
   );
 };
 

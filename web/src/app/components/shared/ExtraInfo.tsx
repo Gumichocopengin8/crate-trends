@@ -59,7 +59,7 @@ const Wrapper = styled.div`
   margin: 2rem 0;
 `;
 
-const Explore = styled.div`
+const Explore = styled.section`
   margin-bottom: 2rem;
 
   .explore-links {
@@ -70,7 +70,7 @@ const Explore = styled.div`
   }
 `;
 
-const Thanks = styled.div`
+const Thanks = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
