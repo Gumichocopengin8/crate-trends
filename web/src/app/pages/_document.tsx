@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import Document, { Head, Main, NextScript } from 'next/document';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -16,7 +16,7 @@ export default class MyDocument extends Document {
 
   render(): JSX.Element {
     return (
-      <html>
+      <Html lang="en">
         <Head>
           <style>{`body {
             margin: 0;
@@ -27,14 +27,26 @@ export default class MyDocument extends Document {
           input {
             outline: 0;
           }`}</style>
-
+          <meta name="google-site-verification" content="koqh25055ZnqyD5EXDbfBKNBI9TtoklhiGvSLAjOgD0" />
           <link rel="icon" href="/ferris.png" type="image/png" />
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_TAG_ID}`} />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+
+              gtag('config', '${process.env.GOOGLE_ANALYTICS_TAG_ID}');
+          `,
+            }}
+          />
         </Head>
         <body className="custom_class">
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }
