@@ -35,7 +35,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
 
   const uniformedData: ChartData[][] = downloadsData
     .map((data) => {
-      const start = moment().subtract(90, 'days');
+      const start = moment().subtract(89, 'days'); // for 90 days
       const end = moment();
       while (start.unix() < end.unix()) {
         // fill missing date data
@@ -89,7 +89,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
   };
 
   return (
-    <>
+    <section>
       <Typography variant="h6" component="h3" gutterBottom>
         Recent Daily Downloads (90days)
       </Typography>
@@ -117,7 +117,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
           </LineChart>
         </ResponsiveContainer>
       </CrateDownloadChart>
-    </>
+    </section>
   );
 };
 
