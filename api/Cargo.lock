@@ -500,9 +500,9 @@ dependencies = [
 
 [[package]]
 name = "crates_io_api"
-version = "0.6.0"
+version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6e3787dfa03ed07ae93eff78ac2c5495fc62be2463315fd43715ad7d43285675"
+checksum = "48fc34993d70c88226800d0f23bb51c96c7dfb285e6a1f96134b7a4d8b81d5a4"
 dependencies = [
  "chrono",
  "futures",
@@ -1501,9 +1501,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.55"
+version = "1.0.57"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec2c5d7e739bc07a3e73381a39d61fdb5f671c60c1df26a130690665803d8226"
+checksum = "164eacbdb13512ec2745fb09d51fd5b22b0d65ed294a1dcf7285a360c80a675c"
 dependencies = [
  "itoa",
  "ryu",
