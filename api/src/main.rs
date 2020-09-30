@@ -58,7 +58,7 @@ async fn index() -> HttpResponse {
   HttpResponse::Ok().body("You're up!!")
 }
 
-async fn get_crate_data(path: web::Path<(String,)>) -> HttpResponse {
+async fn get_crate_data(path: web::Path<String>) -> HttpResponse {
   let crate_data = fetch_crate(&path.0).await;
   match crate_data {
     Ok(value) => HttpResponse::Ok().json(value),
@@ -68,7 +68,7 @@ async fn get_crate_data(path: web::Path<(String,)>) -> HttpResponse {
 
 // get the number of a crate downloads within last 90 days
 // it doesnt actually download data to local
-async fn get_crate_recent_downloads(path: web::Path<(String,)>) -> HttpResponse {
+async fn get_crate_recent_downloads(path: web::Path<String>) -> HttpResponse {
   let download_data = fetch_recent_downloads(&path.0).await;
   match download_data {
     Ok(value) => HttpResponse::Ok().json(value),
