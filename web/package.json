@@ -19,6 +19,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.9.2",
+    "react-is": "^16.13.1",
     "recharts": "^1.8.5",
     "styled-components": "^5.2.0"
   },
