@@ -33,7 +33,7 @@ const MyApp = (props: AppProps): JSX.Element => {
   return (
     <Wrapper>
       <Header />
-      {!isLoading && (
+      {isLoading && (
         <PageIndicator>
           <img src="/ferris.png" alt="ferris icon" />
           <CircularProgress size={36} />
