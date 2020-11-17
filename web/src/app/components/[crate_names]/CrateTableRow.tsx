@@ -60,9 +60,11 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          <Link href={`https://crates.io/crates/${crateData.crate.name}`} rel="noreferrer">
-            {crateData.crate.name}
-          </Link>
+          <Typography variant="subtitle1" component="h2">
+            <Link href={`https://crates.io/crates/${crateData.crate.name}`} rel="noreferrer">
+              {crateData.crate.name}
+            </Link>
+          </Typography>
         </TableCell>
         <TableCell align="right">{crateData.crate.downloads.toLocaleString()}</TableCell>
         <TableCell align="right">{crateData.crate.recent_downloads.toLocaleString()}</TableCell>
@@ -132,7 +134,9 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
                       <TableCell align="right">{dateFormat(version.created_at)}</TableCell>
                       <TableCell align="right">{version.yanked.toString()}</TableCell>
                       <TableCell align="right">{version.license ?? '-'}</TableCell>
-                      <TableCell align="right">{version.crate_size ?? '-'}</TableCell>
+                      <TableCell align="right">
+                        {version.crate_size ? version.crate_size.toLocaleString() : '-'}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
