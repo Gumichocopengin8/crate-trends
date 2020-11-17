@@ -95,7 +95,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
       </Typography>
       <CrateDownloadChart>
         <ResponsiveContainer>
-          <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+          <LineChart data={chartData} margin={{ top: 15, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis />
