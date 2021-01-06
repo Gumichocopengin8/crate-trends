@@ -12,7 +12,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "lodash.zip": "^4.2.0",
     "moment": "^2.29.1",
     "next": "^10.0.3",
