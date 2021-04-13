@@ -45,10 +45,9 @@ const InputForm = (): JSX.Element => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl size="small" variant="outlined" fullWidth>
           <OutlinedInput
-            name="crateNameInput"
+            {...register('crateNameInput', { required: true })}
             type="search"
             placeholder="Search Crates name"
-            inputRef={register({ required: true })}
             defaultValue=""
             autoComplete="off"
             autoFocus
