@@ -7,7 +7,8 @@
     "build": "next build ./src/app",
     "start": "next start ./src/app -p $PORT",
     "lint-app": "eslint './src/**/*.{ts,tsx}'",
-    "prettier": "prettier --write"
+    "prettier": "prettier --write",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
@@ -44,7 +45,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "yarn lint-staged"
     }
   },
   "lint-staged": {
