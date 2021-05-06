@@ -23,9 +23,9 @@ const InputForm = (): JSX.Element => {
   const onSubmit = ({ crateNameInput }: FormData) => {
     const param = crate_names ? String(crate_names).split('+') : [];
     param.push(crateNameInput);
-    const cratesNames: string[] = Array.from(new Set(param)); // somehome spread op not working
+    const cratesNames: string[] = Array.from(new Set(param)); // somehow spread op not working
     router.push('/[crate_names]', `/${cratesNames.join('+')}`);
-    reset({ crateNameInput: '' });
+    reset();
   };
 
   return (
