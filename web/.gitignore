@@ -11,7 +11,8 @@
 # production
 /build
 /dist
-/src/app/.next/cache
+/src/.next/cache
+/.next
 /out
 
 # misc

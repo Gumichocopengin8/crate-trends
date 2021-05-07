@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next ./src/app",
-    "build": "next build ./src/app",
-    "start": "next start ./src/app -p $PORT",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start -p $PORT",
     "lint-app": "eslint './src/**/*.{ts,tsx}'",
     "prettier": "prettier --write",
     "lint-staged": "lint-staged"
