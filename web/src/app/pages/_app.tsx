@@ -26,9 +26,17 @@ const MyApp = (props: AppProps): JSX.Element => {
       jssStyles.parentElement.removeChild(jssStyles);
     }
 
+    // page indicator
     router.events.on('routeChangeStart', () => setLoadingState(true));
     router.events.on('routeChangeComplete', () => setLoadingState(false));
     router.events.on('routeChangeError', () => setLoadingState(false));
+
+    // redirect if user access heroku page
+    if (typeof window !== 'undefined') {
+      if (location.hostname === 'crate-trends.herokuapp.com') {
+        router.push('https://crate-trends.vercel.app');
+      }
+    }
   }, []);
 
   return (
