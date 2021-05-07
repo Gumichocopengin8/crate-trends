@@ -34,7 +34,7 @@ const MyApp = (props: AppProps): JSX.Element => {
   return (
     <Wrapper>
       <Head>
-        <link rel="icon" href="/ferris.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
       </Head>
       <Header />
       {isLoading && (
