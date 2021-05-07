@@ -6,7 +6,7 @@ Crate Trends helps compare multiple Rust Packages
 
 ## Description
 
-[Crate Trends](https://crate-trends.herokuapp.com/) 🦀🦀
+[Crate Trends](https://crate-trends.vercel.app) 🦀🦀
 
 Although Crates.io is a useful tool to find crates, it is difficult to compare multiple crates in term of a number of downloads, license, updated dates, etc...
 Crate Trends solve the problems.

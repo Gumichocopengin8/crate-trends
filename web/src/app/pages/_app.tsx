@@ -8,6 +8,7 @@
 import React, { useState, useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { CircularProgress } from '@material-ui/core';
 import styled from 'styled-components';
 import Header from 'components/shared/Header';
@@ -32,6 +33,9 @@ const MyApp = (props: AppProps): JSX.Element => {
 
   return (
     <Wrapper>
+      <Head>
+        <link rel="icon" href="/ferris.png" type="image/png" sizes="32x32" />
+      </Head>
       <Header />
       {isLoading && (
         <PageIndicator>

@@ -52,7 +52,6 @@ export default class MyDocument extends Document {
             outline: 0;
           }`}</style>
           <meta name="google-site-verification" content="koqh25055ZnqyD5EXDbfBKNBI9TtoklhiGvSLAjOgD0" />
-          <link rel="icon" href="/ferris.png" type="image/png" sizes="32x32" />
           <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_TAG_ID}`} />
           <script
             dangerouslySetInnerHTML={{
