@@ -7,6 +7,9 @@
 use actix_cors::Cors;
 use actix_web::{http::header, middleware::Logger, web, App, HttpResponse, HttpServer};
 use crates_io_api::{AsyncClient, Error};
+use futures::stream::StreamExt;
+mod models;
+use models::crates::CrateName;
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -48,6 +51,7 @@ async fn main() -> std::io::Result<()> {
           .route("/{id}", web::get().to(get_crate_data))
           .route("/{id}/downloads", web::get().to(get_crate_recent_downloads)),
       )
+      .service(web::scope("/api/v1/find").route("/names/{query}", web::get().to(get_all_crate)))
   })
   .bind(format!("{}:{}", host, port))?
   .run()
@@ -61,16 +65,6 @@ async fn index() -> HttpResponse {
 async fn get_crate_data(path: web::Path<String>) -> HttpResponse {
   let crate_data = fetch_crate(&path.0).await;
   match crate_data {
-    Ok(value) => HttpResponse::Ok().json(value),
-    Err(_) => HttpResponse::Ok().json(()),
-  }
-}
-
-// get the number of a crate downloads within last 90 days
-// it doesnt actually download data to local
-async fn get_crate_recent_downloads(path: web::Path<String>) -> HttpResponse {
-  let download_data = fetch_recent_downloads(&path.0).await;
-  match download_data {
     Ok(value) => HttpResponse::Ok().json(value),
     Err(_) => HttpResponse::Ok().json(()),
   }
@@ -90,6 +84,16 @@ async fn fetch_crate(crate_name: &str) -> Result<crates_io_api::CrateResponse, E
   Ok(full_crate)
 }
 
+// get the number of a crate downloads within last 90 days
+// it doesnt actually download data to local
+async fn get_crate_recent_downloads(path: web::Path<String>) -> HttpResponse {
+  let download_data = fetch_recent_downloads(&path.0).await;
+  match download_data {
+    Ok(value) => HttpResponse::Ok().json(value),
+    Err(_) => HttpResponse::Ok().json(()),
+  }
+}
+
 async fn fetch_recent_downloads(crate_name: &str) -> Result<crates_io_api::Downloads, Error> {
   // Instantiate the client.
   let client = AsyncClient::new(
@@ -102,4 +106,37 @@ async fn fetch_recent_downloads(crate_name: &str) -> Result<crates_io_api::Downl
   let val = serde_json::to_value(data).unwrap();
   let downloads: crates_io_api::Downloads = serde_json::from_value(val).unwrap();
   Ok(downloads)
+}
+
+async fn get_all_crate(path: web::Path<String>) -> HttpResponse {
+  let all_crates = fetch_all_crates(Some(String::from(&path.0))).await;
+  match all_crates {
+    Ok(value) => HttpResponse::Ok().json(value),
+    Err(_) => HttpResponse::Ok().json(()),
+  }
+}
+
+async fn fetch_all_crates(query: Option<String>) -> Result<CrateName, Error> {
+  // Instantiate the client.
+  let client = AsyncClient::new(
+    "my-user-agent (my-contact@domain.com)",
+    std::time::Duration::from_millis(1000),
+  )?;
+
+  // Retrieve crate data by query.
+  let mut stream = client.all_crates(query).boxed();
+  let mut arraylist = Vec::with_capacity(10);
+  let mut x = 0;
+  while let Some(item) = stream.next().await {
+    if x == 10 {
+      break;
+    };
+    x += 1;
+    arraylist.push(item?.name);
+  }
+
+  let crate_name = CrateName::new(arraylist);
+  let val = serde_json::to_value(crate_name).unwrap();
+  let full_crate: CrateName = serde_json::from_value(val).unwrap();
+  Ok(full_crate)
 }
