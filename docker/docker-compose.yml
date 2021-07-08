@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  rust:
+    container_name: 'crate-rust'
+    build:
+      context: ..
+      dockerfile: ./docker/rust/Dockerfile
+    ports:
+      - '8080:8080'
+    tty: true
