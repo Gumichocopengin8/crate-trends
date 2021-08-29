@@ -11,37 +11,37 @@
     "lint-staged": "lint-staged"
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.1",
+    "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
     "lodash.zip": "^4.2.0",
     "moment": "^2.29.1",
-    "next": "^11.0.1",
+    "next": "^11.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-hook-form": "^7.11.1",
+    "react-hook-form": "^7.14.0",
     "react-is": "^17.0.2",
-    "recharts": "^2.0.10",
-    "styled-components": "^5.3.0",
-    "swr": "^0.5.6"
+    "recharts": "^2.1.2",
+    "styled-components": "^5.3.1",
+    "swr": "^1.0.0"
   },
   "devDependencies": {
     "@types/lodash.zip": "^4.2.6",
-    "@types/node": "^16.3.3",
-    "@types/react": "^17.0.14",
+    "@types/node": "^16.7.5",
+    "@types/react": "^17.0.19",
     "@types/recharts": "^2.0.0",
-    "@types/styled-components": "^5.1.11",
-    "@typescript-eslint/eslint-plugin": "^4.28.3",
-    "@typescript-eslint/parser": "^4.28.3",
+    "@types/styled-components": "^5.1.13",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
     "babel-plugin-styled-components": "^1.13.2",
-    "eslint": "^7.31.0",
-    "eslint-config-next": "^11.0.1",
+    "eslint": "^7.32.0",
+    "eslint-config-next": "^11.1.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react": "^7.25.0",
     "husky": "^4.3.8",
-    "lint-staged": "^11.0.1",
+    "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
-    "typescript": "^4.3.5"
+    "typescript": "^4.4.2"
   },
   "husky": {
     "hooks": {
