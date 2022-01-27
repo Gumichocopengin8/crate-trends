@@ -1,15 +1,14 @@
-mod agent;
-
-use actix_cors::Cors;
-use actix_web::{http::header, middleware::Logger, web, App, HttpResponse, HttpServer};
 /**
  * Copyright (c) 2020-Present, Keita Nonaka
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+mod agent;
+use actix_cors::Cors;
+use actix_web::{http::header, middleware::Logger, web, App, HttpResponse, HttpServer};
 use agent::generate_async_client;
-use crates_io_api::Error;
+use anyhow::Result;
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -79,19 +78,18 @@ async fn get_crate_recent_downloads(path: web::Path<String>) -> HttpResponse {
     }
 }
 
-async fn fetch_crate(crate_name: &str) -> Result<crates_io_api::CrateResponse, Error> {
+async fn fetch_crate(crate_name: &str) -> Result<crates_io_api::CrateResponse> {
     // Retrieve download data.
     let data = generate_async_client()?.get_crate(crate_name).await?;
-    let val = serde_json::to_value(data).unwrap();
-    let full_crate: crates_io_api::CrateResponse = serde_json::from_value(val).unwrap();
+    let val = serde_json::to_value(data)?;
+    let full_crate: crates_io_api::CrateResponse = serde_json::from_value(val)?;
     Ok(full_crate)
 }
 
-async fn fetch_recent_downloads(crate_name: &str) -> Result<crates_io_api::Downloads, Error> {
+async fn fetch_recent_downloads(crate_name: &str) -> Result<crates_io_api::Downloads> {
     // Retrieve download data.
     let data = generate_async_client()?.crate_downloads(crate_name).await?;
-    let val = serde_json::to_value(data).unwrap();
-    let downloads: crates_io_api::Downloads =
-        serde_json::from_value(val).unwrap();
+    let val = serde_json::to_value(data)?;
+    let downloads: crates_io_api::Downloads = serde_json::from_value(val)?;
     Ok(downloads)
 }
