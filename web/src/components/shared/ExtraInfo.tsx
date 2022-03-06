@@ -8,7 +8,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import { Typography, Link } from '@material-ui/core';
+import { Typography, Link } from '@mui/material';
 
 const ExtraInfo = (): JSX.Element => {
   const router = useRouter();

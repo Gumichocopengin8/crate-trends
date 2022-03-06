@@ -20,13 +20,13 @@ import {
   Typography,
   IconButton,
   Link,
-} from '@material-ui/core';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import DescriptionIcon from '@material-ui/icons/Description';
-import HomeIcon from '@material-ui/icons/Home';
-import CloseIcon from '@material-ui/icons/Close';
+} from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import DescriptionIcon from '@mui/icons-material/Description';
+import HomeIcon from '@mui/icons-material/Home';
+import CloseIcon from '@mui/icons-material/Close';
 import { CrateResponse, Version } from 'interfaces/crate';
 
 interface Props {

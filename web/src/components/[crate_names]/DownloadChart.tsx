@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import moment from 'moment';
 import _zip from 'lodash.zip';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Downloads } from 'interfaces/downloads';
 

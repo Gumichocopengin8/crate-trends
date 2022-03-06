@@ -7,8 +7,8 @@
 
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Typography, Link, FormControl, InputAdornment, IconButton, OutlinedInput } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import { Typography, Link, FormControl, InputAdornment, IconButton, OutlinedInput } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { useForm } from 'react-hook-form';
 
 type FormData = {
@@ -28,42 +28,40 @@ const InputForm = (): JSX.Element => {
     reset();
   };
 
-  return (
-    <>
-      <Typography variant="h5" component="h2" gutterBottom>
-        Compare Crates features for your Rust project
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        You can find crates from{' '}
-        <Link href="https://crates.io/" rel="noreferrer">
-          crates.io
-        </Link>
-      </Typography>
-      <Typography variant="caption" gutterBottom>
-        Currently auto-suggestion feature is not supported
-      </Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl size="small" variant="outlined" fullWidth>
-          <OutlinedInput
-            {...register('crateNameInput', { required: true })}
-            type="search"
-            placeholder="Search Crates name"
-            defaultValue=""
-            autoComplete="off"
-            autoFocus
-            style={{ marginBottom: '1rem' }}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton type="submit" edge="end">
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-      </form>
-    </>
-  );
+  return <>
+    <Typography variant="h5" component="h2" gutterBottom>
+      Compare Crates features for your Rust project
+    </Typography>
+    <Typography variant="body1" gutterBottom>
+      You can find crates from{' '}
+      <Link href="https://crates.io/" rel="noreferrer">
+        crates.io
+      </Link>
+    </Typography>
+    <Typography variant="caption" gutterBottom>
+      Currently auto-suggestion feature is not supported
+    </Typography>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormControl size="small" variant="outlined" fullWidth>
+        <OutlinedInput
+          {...register('crateNameInput', { required: true })}
+          type="search"
+          placeholder="Search Crates name"
+          defaultValue=""
+          autoComplete="off"
+          autoFocus
+          style={{ marginBottom: '1rem' }}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton type="submit" edge="end" size="large">
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+    </form>
+  </>;
 };
 
 export default InputForm;

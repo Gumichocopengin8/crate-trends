@@ -8,7 +8,7 @@
 import React from 'react';
 import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet as StyledComponentSheets } from 'styled-components';
-import { ServerStyleSheets as MaterialUiServerStyleSheets } from '@material-ui/core/styles';
+import MaterialUiServerStyleSheets from '@mui/styles/ServerStyleSheets';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {

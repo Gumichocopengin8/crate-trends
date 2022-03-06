@@ -9,7 +9,8 @@ import React, { useState, useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
+import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
 import styled from 'styled-components';
 import Header from 'components/shared/Header';
 import Footer from 'components/shared/Footer';
@@ -18,6 +19,7 @@ const MyApp = (props: AppProps): JSX.Element => {
   const { Component, pageProps } = props;
   const [isLoading, setLoadingState] = useState(false);
   const router = useRouter();
+  const theme = createTheme();
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -40,20 +42,24 @@ const MyApp = (props: AppProps): JSX.Element => {
   }, []);
 
   return (
-    <Wrapper>
-      <Head>
-        <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
-      </Head>
-      <Header />
-      {isLoading && (
-        <PageIndicator>
-          <img src="/ferris.png" alt="ferris icon" />
-          <CircularProgress size={36} />
-        </PageIndicator>
-      )}
-      <Component {...pageProps} />
-      <Footer />
-    </Wrapper>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <Wrapper>
+          <Head>
+            <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+          </Head>
+          <Header />
+          {isLoading && (
+            <PageIndicator>
+              <img src="/ferris.png" alt="ferris icon" />
+              <CircularProgress size={36} />
+            </PageIndicator>
+          )}
+          <Component {...pageProps} />
+          <Footer />
+        </Wrapper>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };
 

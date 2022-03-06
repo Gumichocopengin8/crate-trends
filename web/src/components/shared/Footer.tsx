@@ -7,7 +7,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { Divider, Link } from '@material-ui/core';
+import { Divider, Link } from '@mui/material';
 
 const Footer = (): JSX.Element => {
   return (
