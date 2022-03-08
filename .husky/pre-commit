@@ -1,7 +1,7 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-if [ -d "$web" ]; then
+if [ -d "web" ]; then
   cd web
 fi
 
