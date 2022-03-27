@@ -61,7 +61,8 @@ async fn index() -> HttpResponse {
 }
 
 async fn get_crate_data(path: web::Path<String>) -> HttpResponse {
-    let crate_data = fetch_crate(&path.0).await;
+    let crate_name = path.into_inner();
+    let crate_data = fetch_crate(&crate_name).await;
     match crate_data {
         Ok(value) => HttpResponse::Ok().json(value),
         Err(_) => HttpResponse::Ok().json(()),
@@ -71,7 +72,8 @@ async fn get_crate_data(path: web::Path<String>) -> HttpResponse {
 // get the number of a crate downloads within last 90 days
 // it doesnt actually download data to local
 async fn get_crate_recent_downloads(path: web::Path<String>) -> HttpResponse {
-    let download_data = fetch_recent_downloads(&path.0).await;
+    let crate_name = path.into_inner();
+    let download_data = fetch_recent_downloads(&crate_name).await;
     match download_data {
         Ok(value) => HttpResponse::Ok().json(value),
         Err(_) => HttpResponse::Ok().json(()),
@@ -81,15 +83,16 @@ async fn get_crate_recent_downloads(path: web::Path<String>) -> HttpResponse {
 async fn fetch_crate(crate_name: &str) -> Result<crates_io_api::CrateResponse> {
     // Retrieve download data.
     let data = generate_async_client()?.get_crate(crate_name).await?;
+    print!("sdf {crate_name}");
     let val = serde_json::to_value(data)?;
     let full_crate: crates_io_api::CrateResponse = serde_json::from_value(val)?;
     Ok(full_crate)
 }
 
-async fn fetch_recent_downloads(crate_name: &str) -> Result<crates_io_api::Downloads> {
+async fn fetch_recent_downloads(crate_name: &str) -> Result<crates_io_api::CrateDownloads> {
     // Retrieve download data.
     let data = generate_async_client()?.crate_downloads(crate_name).await?;
     let val = serde_json::to_value(data)?;
-    let downloads: crates_io_api::Downloads = serde_json::from_value(val)?;
+    let downloads: crates_io_api::CrateDownloads = serde_json::from_value(val)?;
     Ok(downloads)
 }
