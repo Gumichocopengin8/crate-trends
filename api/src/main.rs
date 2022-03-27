@@ -96,3 +96,74 @@ async fn fetch_recent_downloads(crate_name: &str) -> Result<crates_io_api::Crate
     let downloads: crates_io_api::CrateDownloads = serde_json::from_value(val)?;
     Ok(downloads)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use actix_web::{
+        http::{self, header::ContentType},
+        test,
+        web::Bytes,
+    };
+    use crates_io_api::{CrateDownloads, CrateResponse};
+
+    /// Unit tests
+
+    #[actix_web::test]
+    async fn test_index_ok() {
+        let res = index().await;
+        assert_eq!(res.status(), http::StatusCode::OK);
+    }
+
+    #[actix_web::test]
+    async fn test_get_crate_data_ok() {
+        let path: web::Path<String> = web::Path::from("tokio".to_string());
+        let res = get_crate_data(path).await;
+        assert_eq!(res.status(), http::StatusCode::OK);
+    }
+
+    #[actix_web::test]
+    async fn test_get_crate_recent_downloads_ok() {
+        let path: web::Path<String> = web::Path::from("tokio".to_string());
+        let res = get_crate_recent_downloads(path).await;
+        assert_eq!(res.status(), http::StatusCode::OK);
+    }
+
+    // --------------------
+
+    /// Integration Tests
+
+    #[actix_web::test]
+    async fn test_index_get() {
+        let app = test::init_service(App::new().route("/", web::get().to(index))).await;
+        let req = test::TestRequest::default()
+            .insert_header(ContentType::plaintext())
+            .to_request();
+        let res = test::call_service(&app, req).await;
+        assert!(res.status().is_success());
+        let result = test::read_body(res).await;
+        assert_eq!(result, Bytes::from_static(b"You're up!!"));
+    }
+
+    #[actix_web::test]
+    async fn test_get_crate_data_get() {
+        let app =
+            test::init_service(App::new().route("/{id}", web::get().to(get_crate_data))).await;
+        let req = test::TestRequest::get().uri("/tokio").to_request();
+        let res: CrateResponse = test::call_and_read_body_json(&app, req).await;
+        assert_eq!(res.crate_data.id, "tokio");
+    }
+
+    #[actix_web::test]
+    async fn test_get_crate_recent_downloads_get() {
+        let app = test::init_service(
+            App::new().route("/{id}/downloads", web::get().to(get_crate_recent_downloads)),
+        )
+        .await;
+        let req = test::TestRequest::get()
+            .uri("/tokio/downloads")
+            .to_request();
+        let res: CrateDownloads = test::call_and_read_body_json(&app, req).await;
+        assert!(!res.version_downloads.is_empty());
+    }
+}
