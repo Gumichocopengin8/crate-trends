@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import styled from 'styled-components';
+import { css } from '@emotion/react';
 import { fetchCrateDataUsingGET, fetchDownloadDataUsingGET } from 'api/index';
 import { CrateResponse } from 'interfaces/crate';
 import { Downloads } from 'interfaces/downloads';
@@ -55,14 +55,14 @@ const CratesCompare = (): JSX.Element => {
 
   if (cratesData.length === 0 || downloadsData.length === 0) {
     return (
-      <PageIndicator>
+      <div css={PageIndicator}>
         <div className="loader" />
-      </PageIndicator>
+      </div>
     );
   }
 
   return (
-    <Wrapper>
+    <div css={Wrapper}>
       <Head>
         <title>{String(crate_names).split('+').join(', ')} | Crate Trends</title>
       </Head>
@@ -70,15 +70,15 @@ const CratesCompare = (): JSX.Element => {
       <DownloadChart downloadsData={downloadsData} />
       <CratesTable cratesData={cratesData} />
       <ExtraInfo />
-    </Wrapper>
+    </div>
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = css`
   flex: 1;
 `;
 
-const PageIndicator = styled.div`
+const PageIndicator = css`
   display: flex;
   flex: 1;
   flex-direction: column;

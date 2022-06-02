@@ -5,13 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { CircularProgress } from '@mui/material';
-import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
-import styled from 'styled-components';
+import { css } from '@emotion/react';
 import Header from 'components/shared/Header';
 import Footer from 'components/shared/Footer';
 
@@ -19,15 +18,8 @@ const MyApp = (props: AppProps): JSX.Element => {
   const { Component, pageProps } = props;
   const [isLoading, setLoadingState] = useState(false);
   const router = useRouter();
-  const theme = createTheme();
 
   useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
-
     // page indicator
     router.events.on('routeChangeStart', () => setLoadingState(true));
     router.events.on('routeChangeComplete', () => setLoadingState(false));
@@ -42,28 +34,24 @@ const MyApp = (props: AppProps): JSX.Element => {
   }, []);
 
   return (
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <Wrapper>
-          <Head>
-            <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
-          </Head>
-          <Header />
-          {isLoading && (
-            <PageIndicator>
-              <img src="/ferris.png" alt="ferris icon" />
-              <CircularProgress size={36} />
-            </PageIndicator>
-          )}
-          <Component {...pageProps} />
-          <Footer />
-        </Wrapper>
-      </ThemeProvider>
-    </StyledEngineProvider>
+    <div css={Wrapper}>
+      <Head>
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+      </Head>
+      <Header />
+      {isLoading && (
+        <div css={PageIndicator}>
+          <img src="/ferris.png" alt="ferris icon" />
+          <CircularProgress size={36} />
+        </div>
+      )}
+      <Component {...pageProps} />
+      <Footer />
+    </div>
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = css`
   min-height: 100vh;
   padding: 0 4rem;
   display: flex;
@@ -74,7 +62,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const PageIndicator = styled.div`
+const PageIndicator = css`
   position: fixed;
   top: 1rem;
   right: 2rem;

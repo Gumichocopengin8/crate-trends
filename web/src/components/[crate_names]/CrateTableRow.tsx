@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
-import styled from 'styled-components';
+import { css } from '@emotion/react';
 import moment from 'moment';
 import {
   Table,
@@ -53,7 +53,7 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
 
   return (
     <>
-      <RootTableRow>
+      <TableRow css={RootTableRow}>
         <TableCell padding="checkbox">
           <IconButton size="small" onClick={onOpen}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -102,7 +102,7 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
             <CloseIcon fontSize="small" />
           </IconButton>
         </TableCell>
-      </RootTableRow>
+      </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -149,7 +149,7 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
   );
 };
 
-const RootTableRow = styled(TableRow)`
+const RootTableRow = css`
   &&& {
     background: #f5fffe;
 

@@ -5,27 +5,26 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
 import Link from 'next/link';
-import styled from 'styled-components';
+import { css } from '@emotion/react';
 
 const Header = (): JSX.Element => {
   return (
-    <Wrapper>
+    <header css={Wrapper}>
       <Link href="/">
-        <HeaderTitle>
+        <h1 css={HeaderTitle}>
           <span className="crab">🦀</span> Crate Trends
-        </HeaderTitle>
+        </h1>
       </Link>
-    </Wrapper>
+    </header>
   );
 };
 
-const Wrapper = styled.header`
+const Wrapper = css`
   padding: 1rem 0;
 `;
 
-const HeaderTitle = styled.h1`
+const HeaderTitle = css`
   width: fit-content;
   margin: 0;
   font-size: 1.75rem;

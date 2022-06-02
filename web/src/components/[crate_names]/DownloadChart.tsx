@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/router';
-import styled from 'styled-components';
+import { css } from '@emotion/react';
 import moment from 'moment';
 import _zip from 'lodash.zip';
 import { Typography } from '@mui/material';
@@ -93,7 +93,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
       <Typography variant="h6" component="h3" gutterBottom>
         Recent Daily Downloads (90days)
       </Typography>
-      <CrateDownloadChart>
+      <div css={CrateDownloadChart}>
         <ResponsiveContainer>
           <LineChart data={chartData} margin={{ top: 15, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -113,12 +113,12 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
             ))}
           </LineChart>
         </ResponsiveContainer>
-      </CrateDownloadChart>
+      </div>
     </section>
   );
 };
 
-const CrateDownloadChart = styled.div`
+const CrateDownloadChart = css`
   width: 100%;
   height: 45vh;
 `;
