@@ -5,24 +5,23 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import styled from 'styled-components';
+import { css } from '@emotion/react';
 import { Divider, Link } from '@mui/material';
 
 const Footer = (): JSX.Element => {
   return (
     <>
       <Divider />
-      <Wrapper>
+      <footer css={Wrapper}>
         <div>
           a <Link href="https://github.com/Gumichocopengin8">Keita Nonaka</Link> production
         </div>
-      </Wrapper>
+      </footer>
     </>
   );
 };
 
-const Wrapper = styled.footer`
+const Wrapper = css`
   padding: 1.5rem 0;
   display: flex;
   flex-direction: column;

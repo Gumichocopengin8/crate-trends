@@ -5,9 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
 import { useRouter } from 'next/router';
-import styled from 'styled-components';
+import { css } from '@emotion/react';
 import { Typography, Link } from '@mui/material';
 
 const ExtraInfo = (): JSX.Element => {
@@ -18,8 +17,8 @@ const ExtraInfo = (): JSX.Element => {
   };
 
   return (
-    <Wrapper>
-      <Explore>
+    <div css={Wrapper}>
+      <section css={Explore}>
         <Typography variant="h6" component="h3" gutterBottom>
           Explore
         </Typography>
@@ -36,8 +35,8 @@ const ExtraInfo = (): JSX.Element => {
             </Link>
           </div>
         </Typography>
-      </Explore>
-      <Thanks>
+      </section>
+      <section css={Thanks}>
         <Typography variant="subtitle1" component="div" gutterBottom>
           If you want to request new features or report bugs, please make issues on{' '}
           <Link color="primary" href="https://github.com/Gumichocopengin8/crate-trends" rel="noreferrer">
@@ -50,16 +49,16 @@ const ExtraInfo = (): JSX.Element => {
         <Typography variant="subtitle1" component="div" gutterBottom>
           Thank you for using this website and Thank you for contributing in advance!!
         </Typography>
-      </Thanks>
-    </Wrapper>
+      </section>
+    </div>
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = css`
   margin: 2rem 0;
 `;
 
-const Explore = styled.section`
+const Explore = css`
   margin-bottom: 2rem;
 
   .explore-links {
@@ -70,7 +69,7 @@ const Explore = styled.section`
   }
 `;
 
-const Thanks = styled.section`
+const Thanks = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
