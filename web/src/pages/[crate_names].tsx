@@ -51,7 +51,7 @@ const CratesCompare = (): JSX.Element => {
       unmounted = true;
     };
     return cleanup;
-  }, [crate_names]);
+  }, [crate_names, router]);
 
   if (cratesData.length === 0 || downloadsData.length === 0) {
     return (
