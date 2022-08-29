@@ -22,12 +22,20 @@ const CratesCompare = (): JSX.Element => {
   const [crateNames, setCrateNames] = useState<string[]>([]);
   const crateDataResults = useQueries({
     queries: crateNames.map((crateName) => {
-      return { queryKey: ['crateData', crateName], queryFn: () => fetchCrateDataUsingGET(crateName) };
+      return {
+        queryKey: ['crateData', crateName],
+        queryFn: () => fetchCrateDataUsingGET(crateName),
+        staleTime: 100000,
+      };
     }),
   }).filter((v) => v.data);
   const crateDownloadDataResults = useQueries({
     queries: crateNames.map((crateName) => {
-      return { queryKey: ['crateNameDownloads', crateName], queryFn: () => fetchDownloadDataUsingGET(crateName) };
+      return {
+        queryKey: ['crateNameDownloads', crateName],
+        queryFn: () => fetchDownloadDataUsingGET(crateName),
+        staleTime: 100000,
+      };
     }),
   }).filter((v) => v.data);
 

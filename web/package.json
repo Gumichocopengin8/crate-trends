@@ -26,7 +26,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.34.2",
     "react-is": "^18.2.0",
-    "recharts": "^2.1.12"
+    "recharts": "^2.1.12",
+    "recoil": "^0.7.5"
   },
   "devDependencies": {
     "@types/lodash.zip": "^4.2.7",
