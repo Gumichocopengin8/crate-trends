@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useEffect, useState } from 'react';
-import { useQueries } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { crateDataResultsState, crateDownloadDataResultsState } from 'recoil/atoms';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
-import { fetchCrateDataUsingGET, fetchDownloadDataUsingGET } from 'api/index';
 import InputForm from 'components/shared/InputForm';
 import ExtraInfo from 'components/shared/ExtraInfo';
 import CratesTable from 'components/[crate_names]/CratesTable';
@@ -19,34 +19,19 @@ import DownloadChart from 'components/[crate_names]/DownloadChart';
 const CratesCompare = (): JSX.Element => {
   const router = useRouter();
   const { crate_names } = router.query;
-  const [crateNames, setCrateNames] = useState<string[]>([]);
-  const crateDataResults = useQueries({
-    queries: crateNames.map((crateName) => {
-      return {
-        queryKey: ['crateData', crateName],
-        queryFn: () => fetchCrateDataUsingGET(crateName),
-        staleTime: 100000,
-      };
-    }),
-  }).filter((v) => v.data);
-  const crateDownloadDataResults = useQueries({
-    queries: crateNames.map((crateName) => {
-      return {
-        queryKey: ['crateNameDownloads', crateName],
-        queryFn: () => fetchDownloadDataUsingGET(crateName),
-        staleTime: 100000,
-      };
-    }),
-  }).filter((v) => v.data);
+
+  const [crateNames, setCrateNames] = useState([]);
+  const crateDataResults = useRecoilValue(crateDataResultsState(crateNames));
+  const crateDownloadDataResults = useRecoilValue(crateDownloadDataResultsState(crateNames));
 
   useEffect(() => {
     if (!crate_names) return;
     const crateNameList = Array.from(new Set(crate_names.toString().split('+'))); // unique!
     setCrateNames(crateNameList);
-  }, [crate_names]);
+  }, [crate_names, setCrateNames]);
 
   // TODO: it doesnt work after switching to react-query
-  if (crateDataResults.some((d) => d.isLoading) || crateDownloadDataResults.some((d) => d.isLoading)) {
+  if (crateDataResults.length === 0 || crateDownloadDataResults.length === 0) {
     return (
       <div css={PageIndicator}>
         <div className="loader" />
@@ -55,15 +40,17 @@ const CratesCompare = (): JSX.Element => {
   }
 
   return (
-    <div css={Wrapper}>
-      <Head>
-        <title>{String(crate_names).split('+').join(', ')} | Crate Trends</title>
-      </Head>
-      <InputForm />
-      <DownloadChart downloadsData={crateDownloadDataResults.map((d) => d.data)} />
-      <CratesTable cratesData={crateDataResults.map((d) => d.data)} />
-      <ExtraInfo />
-    </div>
+    <React.Suspense fallback={<div>loading</div>}>
+      <div css={Wrapper}>
+        <Head>
+          <title>{String(crate_names).split('+').join(', ')} | Crate Trends</title>
+        </Head>
+        <InputForm />
+        <DownloadChart downloadsData={crateDownloadDataResults} />
+        <CratesTable cratesData={crateDataResults} />
+        <ExtraInfo />
+      </div>
+    </React.Suspense>
   );
 };
 
