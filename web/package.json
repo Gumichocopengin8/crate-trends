@@ -16,8 +16,6 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.10.1",
     "@mui/styles": "^5.9.3",
-    "@tanstack/react-query": "^4.2.3",
-    "@tanstack/react-query-devtools": "^4.2.3",
     "axios": "^0.27.2",
     "lodash.zip": "^4.2.0",
     "moment": "^2.29.4",
@@ -26,7 +24,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.34.2",
     "react-is": "^18.2.0",
-    "recharts": "^2.1.12"
+    "recharts": "^2.1.12",
+    "recoil": "^0.7.5"
   },
   "devDependencies": {
     "@types/lodash.zip": "^4.2.7",

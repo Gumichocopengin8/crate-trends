@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import moment from 'moment';
@@ -33,48 +33,51 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
   const { crate_names } = router.query;
   const cratesNames = String(crate_names).split('+');
 
-  const uniformedData: ChartData[][] = downloadsData
-    .map((data) => {
-      const start = moment().subtract(89, 'days'); // for 90 days
-      const end = moment();
-      while (start.unix() < end.unix()) {
-        // fill missing date data
-        data.version_downloads.push({ date: start.format('YYYY-MM-DD'), downloads: 0, version: 0 });
-        start.add(1, 'days');
-      }
+  const uniformedData: ChartData[][] = useMemo(() => {
+    return downloadsData
+      .map((d) => {
+        const data: Downloads = { version_downloads: [...d.version_downloads], meta: { ...d.meta } };
+        const start = moment().subtract(89, 'days'); // for 90 days
+        const end = moment();
+        while (start.unix() < end.unix()) {
+          // fill missing date data
+          data.version_downloads.push({ date: start.format('YYYY-MM-DD'), downloads: 0, version: 0 });
+          start.add(1, 'days');
+        }
 
-      const dates = data.version_downloads.map((v) => v.date);
-      return Array.from(new Set(dates))
-        .map((date) =>
-          data.version_downloads
-            .map((download) => {
-              if (date === download.date) return download;
-              else return;
-            })
-            .filter((v) => v)
-            .reduce((uniformedDateData, currentValue) => {
-              uniformedDateData =
-                uniformedDateData.date === currentValue.date
-                  ? {
-                      date: currentValue.date,
-                      downloads: uniformedDateData.downloads + currentValue.downloads,
-                    }
-                  : { date: currentValue.date, downloads: currentValue.downloads };
-              return uniformedDateData;
-            }, {} as CustomUniformedData)
-        )
-        .sort((a: CustomUniformedData, b: CustomUniformedData) => {
-          if (a.date < b.date) return -1;
-          if (a.date > b.date) return 1;
-          return 0;
+        const dates = data.version_downloads.map((v) => v.date);
+        return Array.from(new Set(dates))
+          .map((date) =>
+            data.version_downloads
+              .map((download) => {
+                if (date === download.date) return download;
+                else return;
+              })
+              .filter((v) => v)
+              .reduce((uniformedDateData, currentValue) => {
+                uniformedDateData =
+                  uniformedDateData.date === currentValue.date
+                    ? {
+                        date: currentValue.date,
+                        downloads: uniformedDateData.downloads + currentValue.downloads,
+                      }
+                    : { date: currentValue.date, downloads: currentValue.downloads };
+                return uniformedDateData;
+              }, {} as CustomUniformedData)
+          )
+          .sort((a: CustomUniformedData, b: CustomUniformedData) => {
+            if (a.date < b.date) return -1;
+            if (a.date > b.date) return 1;
+            return 0;
+          });
+      })
+      .map((data, i) => {
+        // modifiy data type for chart
+        return data.map((nd) => {
+          return { date: nd.date, [cratesNames[i]]: nd.downloads };
         });
-    })
-    .map((data, i) => {
-      // modifiy data type for chart
-      return data.map((nd) => {
-        return { date: nd.date, [cratesNames[i]]: nd.downloads };
       });
-    });
+  }, [cratesNames, downloadsData]);
 
   // zip to have all crates in an object
   const chartData = _zip(...uniformedData).map((v) => Object.assign({}, ...v));
