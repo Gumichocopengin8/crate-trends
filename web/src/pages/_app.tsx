@@ -6,6 +6,8 @@
  */
 
 import { useState, useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -18,6 +20,7 @@ const MyApp = (props: AppProps): JSX.Element => {
   const { Component, pageProps } = props;
   const [isLoading, setLoadingState] = useState(false);
   const router = useRouter();
+  const queryClient = new QueryClient();
 
   useEffect(() => {
     // page indicator
@@ -31,23 +34,26 @@ const MyApp = (props: AppProps): JSX.Element => {
         router.push('https://crate-trends.vercel.app');
       }
     }
-  }, []);
+  }, [router]);
 
   return (
-    <div css={Wrapper}>
-      <Head>
-        <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
-      </Head>
-      <Header />
-      {isLoading && (
-        <div css={PageIndicator}>
-          <img src="/ferris.png" alt="ferris icon" />
-          <CircularProgress size={36} />
-        </div>
-      )}
-      <Component {...pageProps} />
-      <Footer />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div css={Wrapper}>
+        <Head>
+          <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+        </Head>
+        <Header />
+        {isLoading && (
+          <div css={PageIndicator}>
+            <img src="/ferris.png" alt="ferris icon" />
+            <CircularProgress size={36} />
+          </div>
+        )}
+        <Component {...pageProps} />
+        <Footer />
+      </div>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 };
 

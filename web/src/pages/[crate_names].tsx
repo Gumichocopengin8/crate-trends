@@ -6,12 +6,11 @@
  */
 
 import { useEffect, useState } from 'react';
+import { useQueries } from '@tanstack/react-query';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import { fetchCrateDataUsingGET, fetchDownloadDataUsingGET } from 'api/index';
-import { CrateResponse } from 'interfaces/crate';
-import { Downloads } from 'interfaces/downloads';
 import InputForm from 'components/shared/InputForm';
 import ExtraInfo from 'components/shared/ExtraInfo';
 import CratesTable from 'components/[crate_names]/CratesTable';
@@ -20,40 +19,26 @@ import DownloadChart from 'components/[crate_names]/DownloadChart';
 const CratesCompare = (): JSX.Element => {
   const router = useRouter();
   const { crate_names } = router.query;
-  const [cratesData, setCratesData] = useState<CrateResponse[]>([]);
-  const [downloadsData, setDownloadsData] = useState<Downloads[]>([]);
+  const [crateNames, setCrateNames] = useState<string[]>([]);
+  const crateDataResults = useQueries({
+    queries: crateNames.map((crateName) => {
+      return { queryKey: ['crateData', crateName], queryFn: () => fetchCrateDataUsingGET(crateName) };
+    }),
+  }).filter((v) => v.data);
+  const crateDownloadDataResults = useQueries({
+    queries: crateNames.map((crateName) => {
+      return { queryKey: ['crateNameDownloads', crateName], queryFn: () => fetchDownloadDataUsingGET(crateName) };
+    }),
+  }).filter((v) => v.data);
 
   useEffect(() => {
-    let unmounted = false;
-    const func = async () => {
-      if (!crate_names) return;
-      const crateNames = Array.from(new Set(crate_names.toString().split('+'))); // unique!
-      const crateRequests = crateNames.map((name) => fetchCrateDataUsingGET(name));
-      const downloadRequests = crateNames.map((name) => fetchDownloadDataUsingGET(name));
-      const cratesResults = await Promise.all(crateRequests);
-      const downloadResults = await Promise.all(downloadRequests);
-      const cratesData = cratesResults.filter((v) => v);
-      const downloadsData = downloadResults.filter((v) => v);
-      if (!unmounted) {
-        setCratesData(cratesData);
-        setDownloadsData(downloadsData);
-      }
-
-      const crateIds = cratesData.map((d) => d.crate.id);
-      if (crateIds.length === 0) {
-        router.push('/');
-      } else if (String(crate_names).split('+').length !== crateIds.length) {
-        router.push('/[crate_names]', `/${crateIds.join('+')}`);
-      }
-    };
-    func();
-    const cleanup = () => {
-      unmounted = true;
-    };
-    return cleanup;
+    if (!crate_names) return;
+    const crateNameList = Array.from(new Set(crate_names.toString().split('+'))); // unique!
+    setCrateNames(crateNameList);
   }, [crate_names]);
 
-  if (cratesData.length === 0 || downloadsData.length === 0) {
+  // TODO: it doesnt work after switching to react-query
+  if (crateDataResults.some((d) => d.isLoading) || crateDownloadDataResults.some((d) => d.isLoading)) {
     return (
       <div css={PageIndicator}>
         <div className="loader" />
@@ -67,8 +52,8 @@ const CratesCompare = (): JSX.Element => {
         <title>{String(crate_names).split('+').join(', ')} | Crate Trends</title>
       </Head>
       <InputForm />
-      <DownloadChart downloadsData={downloadsData} />
-      <CratesTable cratesData={cratesData} />
+      <DownloadChart downloadsData={crateDownloadDataResults.map((d) => d.data)} />
+      <CratesTable cratesData={crateDataResults.map((d) => d.data)} />
       <ExtraInfo />
     </div>
   );
