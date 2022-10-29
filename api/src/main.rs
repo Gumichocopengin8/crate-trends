@@ -34,7 +34,6 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         let cors = Cors::default()
             .allowed_origin("http://localhost:3000")
-            .allowed_origin("https://crate-trends.herokuapp.com")
             .allowed_origin_fn(|origin, _req_head| origin.as_bytes().ends_with(b".vercel.app"))
             .allowed_methods(vec!["GET"])
             .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
