@@ -11,7 +11,7 @@ import { css } from '@emotion/react';
 const Header = (): JSX.Element => {
   return (
     <header css={Wrapper}>
-      <Link href="/">
+      <Link css={link} href="/">
         <h1 css={HeaderTitle}>
           <span className="crab">🦀</span> Crate Trends
         </h1>
@@ -22,6 +22,11 @@ const Header = (): JSX.Element => {
 
 const Wrapper = css`
   padding: 1rem 0;
+`;
+
+const link = css`
+  color: inherit;
+  text-decoration: none;
 `;
 
 const HeaderTitle = css`
