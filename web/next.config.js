@@ -18,6 +18,8 @@ module.exports = {
     GOOGLE_ANALYTICS_TAG_ID: process.env.GOOGLE_ANALYTICS_TAG_ID ?? '',
   },
 
+  transpilePackages: ['echarts', 'zrender'],
+
   webpack(config, options) {
     config.plugins = config.plugins || [];
 
