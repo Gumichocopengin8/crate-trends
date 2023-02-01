@@ -5,27 +5,26 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
-import moment from 'moment';
-import _zip from 'lodash.zip';
+import dayjs from 'dayjs';
 import { Typography } from '@mui/material';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Downloads } from 'interfaces/downloads';
+import ReactECharts from 'components/echarts/ReactEChart';
+import type { EChartsOption } from 'echarts';
 
 interface Props {
   downloadsData: Downloads[];
 }
 
-interface CustomUniformedData {
-  date: string;
-  downloads: number;
-}
-
+// date and downloads array length must be equal
 interface ChartData {
-  date: string;
-  [x: string]: number | string;
+  dates: string[];
+  data: {
+    name: string;
+    downloads: number[];
+  }[];
 }
 
 const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
@@ -33,62 +32,59 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
   const { crate_names } = router.query;
   const cratesNames = String(crate_names).split('+');
 
-  const uniformedData: ChartData[][] = useMemo(() => {
-    return downloadsData
-      .map((d) => {
-        const data: Downloads = { version_downloads: [...d.version_downloads], meta: { ...d.meta } };
-        const start = moment().subtract(89, 'days'); // for 90 days
-        const end = moment();
-        while (start.unix() < end.unix()) {
-          // fill missing date data
-          data.version_downloads.push({ date: start.format('YYYY-MM-DD'), downloads: 0, version: 0 });
-          start.add(1, 'days');
-        }
+  const uniformedData: ChartData = useMemo(() => {
+    const dates: string[] = [];
+    let start = dayjs().subtract(89, 'day'); // for 90 days
+    const end = dayjs();
+    while (start.unix() <= end.unix()) {
+      dates.push(start.format('YYYY-MM-DD'));
+      start = start.add(1, 'day');
+    }
 
-        const dates = data.version_downloads.map((v) => v.date);
-        return Array.from(new Set(dates))
-          .map((date) =>
-            data.version_downloads
-              .map((download) => {
-                if (date === download.date) return download;
-                else return;
-              })
-              .filter((v) => v)
-              .reduce((uniformedDateData, currentValue) => {
-                uniformedDateData =
-                  uniformedDateData.date === currentValue.date
-                    ? {
-                        date: currentValue.date,
-                        downloads: uniformedDateData.downloads + currentValue.downloads,
-                      }
-                    : { date: currentValue.date, downloads: currentValue.downloads };
-                return uniformedDateData;
-              }, {} as CustomUniformedData)
-          )
-          .sort((a: CustomUniformedData, b: CustomUniformedData) => {
-            if (a.date < b.date) return -1;
-            if (a.date > b.date) return 1;
-            return 0;
-          });
-      })
-      .map((data, i) => {
-        // modifiy data type for chart
-        return data.map((nd) => {
-          return { date: nd.date, [cratesNames[i]]: nd.downloads };
-        });
-      });
+    // Map<crateName, Map<date, downlowd num>>
+    const map: Map<string, Map<string, number>> = new Map();
+    downloadsData.forEach((d, index) => {
+      const vMap: Map<string, number> = new Map();
+      for (const date of dates) {
+        vMap.set(date, 0);
+      }
+      for (const v of d.version_downloads) {
+        vMap.set(v.date, (vMap.has(v.date) ? vMap.get(v.date) : 0) + v.downloads);
+      }
+      map.set(cratesNames[index], vMap);
+    });
+
+    return {
+      dates: dates,
+      data: cratesNames.map((name) => {
+        const m = map.get(name);
+        return { name, downloads: map.has(name) ? Array.from(m.values()) : [] };
+      }),
+    };
   }, [cratesNames, downloadsData]);
 
-  // zip to have all crates in an object
-  const chartData = _zip(...uniformedData).map((v) => Object.assign({}, ...v));
-
-  const generateRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+  const option: EChartsOption = {
+    dataZoom: [
+      { realtime: true, show: true, type: 'slider' },
+      { realtime: true, show: true, type: 'inside', zoomLock: true },
+    ],
+    tooltip: { trigger: 'axis' },
+    legend: { data: cratesNames, type: 'scroll' },
+    toolbox: {
+      feature: {
+        dataZoom: { yAxisIndex: 'none' },
+        restore: {},
+        dataView: { readOnly: true },
+        magicType: { type: ['line', 'bar'] },
+        saveAsImage: {},
+      },
+    },
+    grid: { left: 80, right: 80 },
+    xAxis: { type: 'category', boundaryGap: false, data: uniformedData.dates },
+    yAxis: { type: 'value' },
+    series: uniformedData.data.map((d) => {
+      return { data: d.downloads, name: d.name, type: 'line' };
+    }),
   };
 
   return (
@@ -97,25 +93,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
         Recent Daily Downloads (90days)
       </Typography>
       <div css={CrateDownloadChart}>
-        <ResponsiveContainer>
-          <LineChart data={chartData} margin={{ top: 15, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            {cratesNames.map((crateName) => (
-              <Line
-                key={crateName}
-                type="monotone"
-                dataKey={crateName}
-                name={crateName}
-                stroke={generateRandomColor()}
-                activeDot={{ r: 8 }}
-              />
-            ))}
-          </LineChart>
-        </ResponsiveContainer>
+        <ReactECharts option={option} />
       </div>
     </section>
   );

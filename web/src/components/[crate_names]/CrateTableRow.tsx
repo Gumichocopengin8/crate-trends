@@ -6,9 +6,9 @@
  */
 
 import { useState } from 'react';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
-import moment from 'moment';
 import {
   Table,
   TableBody,
@@ -37,7 +37,7 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
   const router = useRouter();
   const { crate_names } = router.query;
   const [open, setOpen] = useState<boolean>(false);
-  const dateFormat = (date: Date): string => moment(date).format('MMM DD, YYYY');
+  const dateFormat = (date: Date): string => dayjs(date).format('MMM DD, YYYY');
   const onOpen = () => setOpen((state) => !state);
 
   const onRemoveCrate = () => {
