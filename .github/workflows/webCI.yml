@@ -28,11 +28,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: yarn install, lint, test
+      - name: npm install, lint, test
         working-directory: ./web
         run: |
-          yarn install
-          yarn lint-app
+          npm install
+          npm run lint-app
         env:
           CI: true
 
@@ -50,10 +50,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: yarn build
+      - name: npm run build
         working-directory: ./web
         run: |
-          yarn install
-          yarn build
+          npm install
+          npm run build
         env:
           CI: true

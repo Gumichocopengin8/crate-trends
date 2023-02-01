@@ -5,6 +5,11 @@
     "browser": true,
     "node": true
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "plugins": ["@typescript-eslint", "react", "react-hooks"],
   "parser": "@typescript-eslint/parser",
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:react/recommended", "prettier"],

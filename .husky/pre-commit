@@ -5,4 +5,4 @@ if [ -d "web" ]; then
   cd web
 fi
 
-yarn lint-staged
+npm run lint-staged
