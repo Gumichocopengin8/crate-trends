@@ -13,7 +13,7 @@ import {
 import * as echarts from 'echarts/core';
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import useResize from 'hooks/useResize';
 
@@ -43,37 +43,27 @@ interface Props {
 const ReactECharts: React.FC<Props> = ({ option, style, settings = {}, onClick }: Props) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const [width, height] = useResize(chartRef);
+  const [echart, setEchart] = useState<echarts.ECharts | undefined>(undefined);
 
   useEffect(() => {
-    console.log(height, width);
-    const echart: echarts.ECharts | undefined = (() => {
-      if (chartRef.current) {
-        const chart = echarts.init(chartRef.current, null, {
-          height: height,
-          renderer: 'canvas',
-          useDirtyRect: false,
-          width: width,
-        });
-        chart.on('click', onClick ?? (() => undefined));
-
-        return chart;
-      }
-      return undefined;
-    })();
-
-    echart?.resize();
+    if (chartRef.current && !echart) {
+      const chart = echarts.init(chartRef.current, null, { renderer: 'canvas', useDirtyRect: false });
+      chart.on('click', onClick ?? (() => undefined));
+      setEchart(chart);
+    }
 
     return () => {
       echart?.dispose();
     };
-  }, [height, width, onClick]);
+  }, [echart, onClick]);
 
   useEffect(() => {
-    if (chartRef.current) {
-      const echart = echarts.getInstanceByDom(chartRef.current);
-      echart?.setOption(option, { ...settings, notMerge: true }); // notMerge should be true
-    }
-  }, [option, settings]);
+    echart?.resize({ width, height });
+  }, [echart, height, width]);
+
+  useEffect(() => {
+    echart?.setOption(option, { ...settings, notMerge: false });
+  }, [echart, option, settings]);
 
   return (
     <div

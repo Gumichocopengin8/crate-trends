@@ -20,6 +20,8 @@ module.exports = {
 
   transpilePackages: ['echarts', 'zrender'],
 
+  reactStrictMode: true,
+
   webpack(config, options) {
     config.plugins = config.plugins || [];
 
