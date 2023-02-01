@@ -15,7 +15,6 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.6",
-    "@mui/styles": "^5.11.2",
     "axios": "^1.2.6",
     "dayjs": "^1.11.7",
     "echarts": "^5.4.1",
