@@ -42,7 +42,7 @@ interface Props {
 
 const ReactECharts: React.FC<Props> = ({ option, style, settings = {}, onClick }: Props) => {
   const chartRef = useRef<HTMLDivElement>(null);
-  const [height, width] = useResize(chartRef);
+  const [width, height] = useResize(chartRef);
 
   useEffect(() => {
     console.log(height, width);
@@ -66,7 +66,7 @@ const ReactECharts: React.FC<Props> = ({ option, style, settings = {}, onClick }
     return () => {
       echart?.dispose();
     };
-  }, [height, onClick, width]);
+  }, [height, width, onClick]);
 
   useEffect(() => {
     if (chartRef.current) {
