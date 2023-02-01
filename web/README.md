@@ -4,6 +4,6 @@
 
 In `web` directory
 
-- Run `yarn`
-- Run `yarn dev`
+- Run `npm i`
+- Run `npm run dev`
 - Access to `http://localhost:3000/`
