@@ -69,7 +69,11 @@ const ReactECharts: React.FC<Props> = ({ option, style, settings = {}, onClick }
   }, [echart, height, width]);
 
   useEffect(() => {
-    echart?.setOption(option, { ...settings, notMerge: false });
+    echart?.setOption(option, {
+      ...settings,
+      notMerge: false,
+      replaceMerge: ['xAxis', 'yAxis', 'series'],
+    });
   }, [echart, option, settings]);
 
   return (
