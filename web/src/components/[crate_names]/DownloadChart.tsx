@@ -64,6 +64,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
   }, [cratesNames, downloadsData]);
 
   const option: EChartsOption = {
+    animation: false,
     dataZoom: [
       { realtime: true, show: true, type: 'slider' },
       { realtime: true, show: true, type: 'inside', zoomLock: true },
@@ -82,9 +83,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
     grid: { left: 80, right: 80 },
     xAxis: { type: 'category', boundaryGap: false, data: uniformedData.dates },
     yAxis: { type: 'value' },
-    series: uniformedData.data.map((d) => {
-      return { data: d.downloads, name: d.name, type: 'line' };
-    }),
+    series: uniformedData.data.map((d) => ({ data: d.downloads, name: d.name, type: 'line' })),
   };
 
   return (
