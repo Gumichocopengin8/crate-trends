@@ -56,6 +56,9 @@ const ReactECharts: React.FC<Props> = ({ option, style, settings = {}, onClick }
     if (chartRef.current && !echart) {
       const chart = echarts.init(chartRef.current, null, { renderer: 'canvas', useDirtyRect: false });
       chart.on('click', onClick ?? (() => undefined));
+      chart.getZr().on('dblclick', () => {
+        chart.dispatchAction({ type: 'dataZoom', start: 0, end: 100 });
+      });
       setEchart(chart);
     }
 
