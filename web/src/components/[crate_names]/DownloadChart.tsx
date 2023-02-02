@@ -74,14 +74,13 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
     toolbox: {
       feature: {
         dataZoom: { yAxisIndex: 'none' },
-        restore: {},
         dataView: { readOnly: true },
         magicType: { type: ['line', 'bar'] },
         saveAsImage: {},
       },
     },
     grid: { left: 80, right: 80 },
-    xAxis: { type: 'category', boundaryGap: false, data: uniformedData.dates },
+    xAxis: { type: 'category', boundaryGap: true, data: uniformedData.dates },
     yAxis: { type: 'value' },
     series: uniformedData.data.map((d) => ({ data: d.downloads, name: d.name, type: 'line' })),
   };
