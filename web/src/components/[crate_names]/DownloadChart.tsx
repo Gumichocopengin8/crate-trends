@@ -6,16 +6,16 @@
  */
 
 import { useMemo } from 'react';
-import { useRouter } from 'next/router';
+import { useRecoilValue } from 'recoil';
 import { css } from '@emotion/react';
 import dayjs from 'dayjs';
+import { crateDownloadDataResultsState } from 'recoil/atoms';
 import { Typography } from '@mui/material';
-import { Downloads } from 'interfaces/downloads';
 import ReactECharts from 'components/echarts/ReactEChart';
 import type { EChartsOption } from 'echarts';
 
 interface Props {
-  downloadsData: Downloads[];
+  crateNames: string[];
 }
 
 // date and downloads array length must be equal
@@ -27,10 +27,8 @@ interface ChartData {
   }[];
 }
 
-const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
-  const router = useRouter();
-  const { crate_names } = router.query;
-  const cratesNames = String(crate_names).split('+');
+const DownloadChart = ({ crateNames }: Props): JSX.Element => {
+  const crateDownloadDataResults = useRecoilValue(crateDownloadDataResultsState(crateNames));
 
   const uniformedData: ChartData = useMemo(() => {
     const dates: string[] = [];
@@ -43,7 +41,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
 
     // Map<crateName, Map<date, downlowd num>>
     const map: Map<string, Map<string, number>> = new Map();
-    downloadsData.forEach((d, index) => {
+    crateDownloadDataResults.forEach((d, index) => {
       const vMap: Map<string, number> = new Map();
       for (const date of dates) {
         vMap.set(date, 0);
@@ -51,17 +49,17 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
       for (const v of d.version_downloads) {
         vMap.set(v.date, (vMap.has(v.date) ? vMap.get(v.date) : 0) + v.downloads);
       }
-      map.set(cratesNames[index], vMap);
+      map.set(crateNames[index], vMap);
     });
 
     return {
       dates: dates,
-      data: cratesNames.map((name) => {
+      data: crateNames.map((name) => {
         const m = map.get(name);
         return { name, downloads: map.has(name) ? Array.from(m.values()) : [] };
       }),
     };
-  }, [cratesNames, downloadsData]);
+  }, [crateNames, crateDownloadDataResults]);
 
   const option: EChartsOption = {
     animation: false,
@@ -70,7 +68,7 @@ const DownloadChart = ({ downloadsData }: Props): JSX.Element => {
       { realtime: true, show: true, type: 'inside', zoomLock: true },
     ],
     tooltip: { trigger: 'axis' },
-    legend: { data: cratesNames, type: 'scroll' },
+    legend: { data: crateNames, type: 'scroll' },
     toolbox: {
       feature: {
         dataZoom: { yAxisIndex: 'none' },

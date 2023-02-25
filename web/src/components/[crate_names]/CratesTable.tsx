@@ -5,15 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
-import { CrateResponse } from 'interfaces/crate';
+import { Table, TableBody, TableContainer, Paper, Typography } from '@mui/material';
+import StatsTableHead from 'components/shared/table/StatsTableHead';
+import { useRecoilValue } from 'recoil';
+import { crateDataResultsState } from 'recoil/atoms';
 import CrateTableRow from './CrateTableRow';
 
 interface Props {
-  cratesData: CrateResponse[];
+  crateNames: string[];
 }
 
-const CratesTable = ({ cratesData }: Props): JSX.Element => {
+const CratesTable = ({ crateNames }: Props): JSX.Element => {
+  const crateDataResults = useRecoilValue(crateDataResultsState(crateNames));
+
   return (
     <section>
       <Typography variant="h6" component="h3" gutterBottom>
@@ -21,22 +25,9 @@ const CratesTable = ({ cratesData }: Props): JSX.Element => {
       </Typography>
       <TableContainer variant="outlined" component={Paper}>
         <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell>Name</TableCell>
-              <TableCell align="right">Total Downloads</TableCell>
-              <TableCell align="right">Recent Downloads</TableCell>
-              <TableCell align="right">Updated At</TableCell>
-              <TableCell align="right">Created At</TableCell>
-              <TableCell align="center">Doc</TableCell>
-              <TableCell align="center">Homepage</TableCell>
-              <TableCell align="center">Repo</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
+          <StatsTableHead />
           <TableBody>
-            {cratesData.map((crate) => (
+            {crateDataResults.map((crate) => (
               <CrateTableRow key={crate.crate.id} crateData={crate} />
             ))}
           </TableBody>

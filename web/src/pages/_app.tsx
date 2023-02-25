@@ -17,7 +17,7 @@ import Footer from 'components/shared/Footer';
 
 const MyApp = (props: AppProps): JSX.Element => {
   const { Component, pageProps } = props;
-  const [isLoading, setLoadingState] = useState(false);
+  const [isLoading, setLoadingState] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
