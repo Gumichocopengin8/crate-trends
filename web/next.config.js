@@ -11,6 +11,9 @@ const path = require('path');
 const isProd = process.env.ENVIRONMENT === 'product_env';
 
 module.exports = {
+  compiler: {
+    emotion: true,
+  },
   distDir: './build',
 
   env: {
