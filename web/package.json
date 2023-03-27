@@ -8,7 +8,8 @@
     "start": "next start -p $PORT",
     "lint-app": "eslint './src/**/*.{ts,tsx}'",
     "prettier": "prettier --write",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -25,6 +26,7 @@
     "recoil": "^0.7.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.32.1",
     "@types/node": "^18.15.10",
     "@types/react": "^18.0.29",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
