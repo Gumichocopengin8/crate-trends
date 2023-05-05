@@ -68,7 +68,7 @@ const DownloadChart = ({ crateNames }: Props): JSX.Element => {
       { realtime: true, show: true, type: 'inside', zoomLock: true },
     ],
     tooltip: { trigger: 'axis' },
-    legend: { data: crateNames, type: 'scroll' },
+    legend: { data: crateNames, type: 'scroll', padding: [8, 200, 0, 0], left: '10%' },
     toolbox: {
       feature: {
         dataZoom: { yAxisIndex: 'none' },
