@@ -5,9 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require('path');
-
 const isProd = process.env.ENVIRONMENT === 'product_env';
 
 module.exports = {
@@ -26,13 +23,10 @@ module.exports = {
   reactStrictMode: true,
 
   webpack(config, options) {
+    config.experiments = { asyncWebAssembly: true };
     config.plugins = config.plugins || [];
 
     config.plugins = [...config.plugins];
-
-    config.resolve.alias['components'] = path.join(__dirname, 'src/components');
-    config.resolve.alias['api'] = path.join(__dirname, 'src/api');
-    config.resolve.alias['interfaces'] = path.join(__dirname, 'src/interfaces');
     return config;
   },
 };

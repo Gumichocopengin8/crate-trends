@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "build:wasm": "wasm-pack build src/web_assembly --target web --release",
     "start": "next start -p $PORT",
     "lint-app": "eslint './src/**/*.{ts,tsx}'",
     "prettier": "prettier --write",
@@ -23,7 +24,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.2",
-    "recoil": "^0.7.7"
+    "recoil": "^0.7.7",
+    "wasm-pack": "^0.12.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.36.1",
@@ -47,9 +49,9 @@
     }
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": [
+    "*.{ts,tsx}": [
       "prettier --write",
-      "eslint --fix './src/**/*.{js,ts,tsx}'"
+      "eslint --fix './src/**/*.{ts,tsx}'"
     ],
     "*.scss": [
       "prettier --write"
