@@ -6,20 +6,39 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, useSetRecoilState } from 'recoil';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { CircularProgress } from '@mui/material';
 import { css } from '@emotion/react';
 import Header from 'components/shared/Header';
-import Spinner from 'components/shared/Spinner';
 import Footer from 'components/shared/Footer';
 import init from 'web_assembly/pkg';
+import { isWasmLoadedState } from 'recoil/atoms';
+
+const HiddenComponent = () => {
+  // hidden compont to load wasm
+  // This component should be under <RecoilRoot>
+  const setIsWasmLoaded = useSetRecoilState(isWasmLoadedState);
+
+  useEffect(() => {
+    (async () => {
+      await init()
+        .then(() => {
+          setIsWasmLoaded(true);
+        })
+        .catch((err) => {
+          console.error('wasm error', err);
+        });
+    })();
+  }, [setIsWasmLoaded]);
+
+  return <></>;
+};
 
 const MyApp = (props: AppProps): JSX.Element => {
   const { Component, pageProps } = props;
-  const [isWasmLoaded, setIsWasmLoaded] = useState<boolean>(false);
   const [isLoading, setLoadingState] = useState<boolean>(false);
   const router = useRouter();
 
@@ -37,29 +56,10 @@ const MyApp = (props: AppProps): JSX.Element => {
     }
   }, [router]);
 
-  useEffect(() => {
-    (async () => {
-      await init()
-        .then(() => {
-          setIsWasmLoaded(true);
-        })
-        .catch((err) => {
-          console.error('wasm error', err);
-        });
-    })();
-  }, []);
-
-  if (!isWasmLoaded) {
-    return (
-      <div css={Wrapper}>
-        <Spinner loadingMessage="Wait for a few moment" />
-      </div>
-    );
-  }
-
   return (
     <React.StrictMode>
       <RecoilRoot>
+        <HiddenComponent />
         <div css={Wrapper}>
           <Head>
             <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
