@@ -13,10 +13,13 @@ import Head from 'next/head';
 import { CircularProgress } from '@mui/material';
 import { css } from '@emotion/react';
 import Header from 'components/shared/Header';
+import Spinner from 'components/shared/Spinner';
 import Footer from 'components/shared/Footer';
+import init from 'web_assembly/pkg';
 
 const MyApp = (props: AppProps): JSX.Element => {
   const { Component, pageProps } = props;
+  const [isWasmLoaded, setIsWasmLoaded] = useState<boolean>(false);
   const [isLoading, setLoadingState] = useState<boolean>(false);
   const router = useRouter();
 
@@ -33,6 +36,26 @@ const MyApp = (props: AppProps): JSX.Element => {
       }
     }
   }, [router]);
+
+  useEffect(() => {
+    (async () => {
+      await init()
+        .then(() => {
+          setIsWasmLoaded(true);
+        })
+        .catch((err) => {
+          console.error('wasm error', err);
+        });
+    })();
+  }, []);
+
+  if (!isWasmLoaded) {
+    return (
+      <div css={Wrapper}>
+        <Spinner loadingMessage="Wait for a few moment" />
+      </div>
+    );
+  }
 
   return (
     <React.StrictMode>

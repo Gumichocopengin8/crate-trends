@@ -9,10 +9,11 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
+js-sys = "0.3.64"
 wasm-bindgen = "0.2.87"
 
 [profile.dev]
 opt-level = 0
 
 [profile.release]
-opt-level = 2
+opt-level = 3

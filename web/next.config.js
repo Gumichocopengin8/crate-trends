@@ -23,10 +23,8 @@ module.exports = {
   reactStrictMode: true,
 
   webpack(config, options) {
-    config.experiments = { asyncWebAssembly: true };
-    config.plugins = config.plugins || [];
+    config.experiments = { ...config.experiments, asyncWebAssembly: true };
 
-    config.plugins = [...config.plugins];
     return config;
   },
 };
