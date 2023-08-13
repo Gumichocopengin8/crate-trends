@@ -6,29 +6,15 @@
  * @returns {any}
  */
 export function uniform_data(crate_names: string[], crate_download_data_results: string): any;
-/**
- * @param {(string)[]} input
- * @returns {(string)[]}
- */
-export function test_array(input: string[]): string[];
-/**
- * @param {number} left
- * @param {number} right
- * @returns {number}
- */
-export function add(left: number, right: number): number;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly uniform_data: (a: number, b: number, c: number, d: number, e: number) => void;
-  readonly test_array: (a: number, b: number, c: number) => void;
-  readonly add: (a: number, b: number) => number;
-  readonly __wbindgen_malloc: (a: number, b: number) => number;
-  readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+  readonly __wbindgen_export_0: (a: number, b: number) => number;
+  readonly __wbindgen_export_1: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
-  readonly __wbindgen_free: (a: number, b: number, c: number) => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;

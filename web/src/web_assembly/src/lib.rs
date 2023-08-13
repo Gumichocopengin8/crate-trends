@@ -1,8 +1,10 @@
 use chrono::{Duration, Local};
 use js_sys::JsString;
 use serde_derive::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use wasm_bindgen::prelude::*;
+
+const ERROR: &str = "Error to aggregate data";
 
 #[derive(Debug, Deserialize, Serialize)]
 struct VersionDownloads {
@@ -35,8 +37,7 @@ pub fn uniform_data(
 ) -> Result<JsValue, JsValue> {
     let parsed_data: Result<Vec<Downloads>, _> = serde_json::from_str(crate_download_data_results);
     if let Ok(crate_download_data) = parsed_data {
-        let mut dates: Vec<String> = Vec::new();
-
+        let mut dates: Vec<String> = Vec::with_capacity(91);
         let end_date = Local::now();
         let mut start_date = end_date - Duration::days(89);
 
@@ -46,13 +47,13 @@ pub fn uniform_data(
         }
 
         //  Map<crateName, Map<date, downlowd num>>
-        let mut map: HashMap<String, HashMap<String, usize>> = HashMap::new();
+        let mut map: BTreeMap<String, BTreeMap<String, usize>> = BTreeMap::new();
 
         crate_download_data
             .iter()
             .enumerate()
             .for_each(|(index, val)| {
-                let mut v_map: HashMap<String, usize> = HashMap::new();
+                let mut v_map: BTreeMap<String, usize> = BTreeMap::new();
                 for date in &dates {
                     v_map.insert(date.to_string(), 0);
                 }
@@ -98,29 +99,8 @@ pub fn uniform_data(
         let json_string = serde_json::to_string(&data);
         return match json_string {
             Ok(json) => Ok(JsValue::from_str(&json)),
-            Err(_) => Err(JsValue::from_str("Division by zero")),
+            Err(_) => Err(JsValue::from_str(ERROR)),
         };
     }
-    Err(JsValue::from_str("Division by zero"))
-}
-
-#[wasm_bindgen]
-pub fn test_array(input: Vec<JsString>) -> Vec<JsString> {
-    input
-}
-
-#[wasm_bindgen]
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+    Err(JsValue::from_str(ERROR))
 }
