@@ -20,7 +20,13 @@ const CratesCompare = (): JSX.Element => {
   const router = useRouter();
   const { crate_names } = router.query;
 
+  const [isClient, setIsClient] = useState<boolean>(false);
   const [crateNames, setCrateNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    // https://nextjs.org/docs/messages/react-hydration-error
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (!crate_names) return;
@@ -37,7 +43,7 @@ const CratesCompare = (): JSX.Element => {
       </Head>
       <InputForm />
       <Suspense fallback={<ChartSkelton />}>
-        <DownloadChart crateNames={crateNames} />
+        {isClient ? <DownloadChart crateNames={crateNames} /> : <ChartSkelton />}
       </Suspense>
       <Suspense fallback={<TableSkelton crateNames={crateNames} />}>
         <CratesTable crateNames={crateNames} />

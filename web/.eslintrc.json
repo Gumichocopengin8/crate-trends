@@ -18,6 +18,7 @@
     "@typescript-eslint/explicit-member-accessibility": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/prefer-interface": "off",
+    "@typescript-eslint/no-empty-function": "off",
     "react/react-in-jsx-scope": "off",
     "react/self-closing-comp": ["error"],
     "react/display-name": "off", // TODO: remove this in the future

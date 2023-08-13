@@ -8,11 +8,12 @@
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { css } from '@emotion/react';
-import dayjs from 'dayjs';
 import { crateDownloadDataResultsState } from 'recoil/atoms';
 import { Typography } from '@mui/material';
 import ReactECharts from 'components/echarts/ReactEChart';
 import type { EChartsOption } from 'echarts';
+import { uniform_data } from 'web_assembly/pkg/web_assembly';
+import { wasmInitSelector } from 'recoil/selectors';
 
 interface Props {
   crateNames: string[];
@@ -29,36 +30,14 @@ interface ChartData {
 
 const DownloadChart = ({ crateNames }: Props): JSX.Element => {
   const crateDownloadDataResults = useRecoilValue(crateDownloadDataResultsState(crateNames));
+  const isWasmLoaded = useRecoilValue(wasmInitSelector);
 
   const uniformedData: ChartData = useMemo(() => {
-    const dates: string[] = [];
-    let start = dayjs().subtract(89, 'day'); // for 90 days
-    const end = dayjs();
-    while (start.unix() <= end.unix()) {
-      dates.push(start.format('YYYY-MM-DD'));
-      start = start.add(1, 'day');
-    }
-
-    // Map<crateName, Map<date, downlowd num>>
-    const map: Map<string, Map<string, number>> = new Map();
-    crateDownloadDataResults.forEach((d, index) => {
-      const vMap: Map<string, number> = new Map();
-      for (const date of dates) {
-        vMap.set(date, 0);
-      }
-      for (const v of d.version_downloads) {
-        vMap.set(v.date, (vMap.has(v.date) ? vMap.get(v.date) : 0) + v.downloads);
-      }
-      map.set(crateNames[index], vMap);
-    });
-
-    return {
-      dates: dates,
-      data: crateNames.map((name) => {
-        const m = map.get(name);
-        return { name, downloads: map.has(name) ? Array.from(m.values()) : [] };
-      }),
-    };
+    const t1 = performance.now();
+    const data: ChartData = JSON.parse(uniform_data(crateNames, JSON.stringify(crateDownloadDataResults)));
+    const t2 = performance.now();
+    console.log(t2 - t1);
+    return data;
   }, [crateNames, crateDownloadDataResults]);
 
   const option: EChartsOption = {
@@ -89,7 +68,7 @@ const DownloadChart = ({ crateNames }: Props): JSX.Element => {
         Recent Daily Downloads (90days)
       </Typography>
       <div css={CrateDownloadChart}>
-        <ReactECharts option={option} />
+        <>{isWasmLoaded && <ReactECharts option={option} />}</>
       </div>
     </section>
   );

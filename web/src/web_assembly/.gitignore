@@ -1,0 +1,5 @@
+/target
+
+# ignore this file since i cannot install Rust on vercel
+# That means pkg folder cannot be generated
+/pkg/.gitignore

@@ -1,7 +1,8 @@
-import { selectorFamily, waitForAll } from 'recoil';
+import { selector, selectorFamily, waitForAll } from 'recoil';
 import { CrateResponse } from 'interfaces/crate';
 import { Downloads } from 'interfaces/downloads';
 import { fetchCrateDataUsingGET, fetchDownloadDataUsingGET } from 'api/index';
+import init from 'web_assembly/pkg';
 
 const crateDataResultQuery = selectorFamily<CrateResponse, string>({
   key: 'crateDataResultQuery',
@@ -37,4 +38,16 @@ export const crateDownloadDataResultsQuery = selectorFamily<Downloads[], string[
       const crateDataResults = get(waitForAll(crateNames.map((crateName) => crateDownloadDataResultQuery(crateName))));
       return crateDataResults.filter((d) => d);
     },
+});
+
+export const wasmInitSelector = selector<boolean>({
+  key: 'wasmInitSelector',
+  get: async () => {
+    return await init()
+      .then(() => true)
+      .catch(() => {
+        console.error('failed to load web assembly');
+        return false;
+      });
+  },
 });
