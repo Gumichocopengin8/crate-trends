@@ -47,9 +47,10 @@ interface Props {
   option: EChartsOption;
   settings?: SetOptionOpts;
   style?: CSSProperties;
+  group?: string;
 }
 
-const ReactECharts: React.FC<Props> = ({ option, style, settings = {}, onClick }: Props) => {
+const ReactECharts: React.FC<Props> = ({ option, style, group, settings = {}, onClick }: Props) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const [width, height] = useResize(chartRef);
   const [echart, setEchart] = useState<echarts.ECharts | undefined>(undefined);
@@ -61,13 +62,17 @@ const ReactECharts: React.FC<Props> = ({ option, style, settings = {}, onClick }
       chart.getZr().on('dblclick', () => {
         chart.dispatchAction({ type: 'dataZoom', start: 0, end: 100 });
       });
+      if (group) {
+        chart.group = group;
+        echarts.connect(group);
+      }
       setEchart(chart);
     }
 
     return () => {
       echart?.dispose();
     };
-  }, [echart, onClick]);
+  }, [echart, onClick, group]);
 
   useEffect(() => {
     echart?.resize({ width, height });
