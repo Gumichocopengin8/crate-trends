@@ -82,7 +82,6 @@ async fn get_crate_recent_downloads(path: web::Path<String>) -> HttpResponse {
 async fn fetch_crate(crate_name: &str) -> Result<crates_io_api::CrateResponse> {
     // Retrieve download data.
     let data = generate_async_client()?.get_crate(crate_name).await?;
-    print!("sdf {crate_name}");
     let val = serde_json::to_value(data)?;
     let full_crate: crates_io_api::CrateResponse = serde_json::from_value(val)?;
     Ok(full_crate)
