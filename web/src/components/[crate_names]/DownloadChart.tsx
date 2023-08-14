@@ -76,7 +76,7 @@ const DownloadChart = ({ crateNames }: Props): JSX.Element => {
 
 const CrateDownloadChart = css`
   width: 100%;
-  height: 45vh;
+  height: clamp(380px, 45vh, 400px);
 `;
 
 export default DownloadChart;

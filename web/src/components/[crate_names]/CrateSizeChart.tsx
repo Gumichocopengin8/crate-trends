@@ -43,10 +43,8 @@ const CrateSizeChart = ({ versionList }: Props): JSX.Element => {
 
   return (
     <div>
+      <Typography variant="subtitle1">Crate Size Transition</Typography>
       <div css={SizeChart}>
-        <Typography variant="h6" component="h3" gutterBottom>
-          Crate Size Transition
-        </Typography>
         <ReactECharts option={option} />
       </div>
     </div>
@@ -55,7 +53,7 @@ const CrateSizeChart = ({ versionList }: Props): JSX.Element => {
 
 const SizeChart = css`
   width: 100%;
-  height: 45vh;
+  height: clamp(380px, 45vh, 400px);
 `;
 
 export default CrateSizeChart;

@@ -19,6 +19,8 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import HomeIcon from '@mui/icons-material/Home';
 import CloseIcon from '@mui/icons-material/Close';
 import { CrateResponse, Version } from 'interfaces/crate';
+import prettyBytes from 'pretty-bytes';
+import CrateSizeChart from './CrateSizeChart';
 
 interface Props {
   crateData: CrateResponse;
@@ -115,6 +117,7 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
               <Typography variant="subtitle1" gutterBottom>
                 Description: {crateData.crate.description ?? '-'}
               </Typography>
+              <CrateSizeChart versionList={[...crateData.versions].reverse()} />
               <Typography variant="subtitle1" gutterBottom component="h3">
                 Versions:
               </Typography>
@@ -127,7 +130,7 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
                     <TableCell align="right">Created At</TableCell>
                     <TableCell align="right">Yanked</TableCell>
                     <TableCell align="right">License</TableCell>
-                    <TableCell align="right">Size (byte)</TableCell>
+                    <TableCell align="right">Size</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -139,9 +142,7 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
                       <TableCell align="right">{dateFormat(version.created_at)}</TableCell>
                       <TableCell align="right">{version.yanked.toString()}</TableCell>
                       <TableCell align="right">{version.license ?? '-'}</TableCell>
-                      <TableCell align="right">
-                        {version.crate_size ? version.crate_size.toLocaleString() : '-'}
-                      </TableCell>
+                      <TableCell align="right">{version.crate_size ? prettyBytes(version.crate_size) : '-'}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
