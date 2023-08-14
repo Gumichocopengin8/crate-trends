@@ -36,6 +36,9 @@ const TableSkeltonRow = () => {
         <Skeleton height={32} />
       </TableCell>
       <TableCell>
+        <Skeleton height={32} />
+      </TableCell>
+      <TableCell>
         <IconButton size="small" disabled>
           <CloseIcon fontSize="small" />
         </IconButton>
