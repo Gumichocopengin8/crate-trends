@@ -1,34 +1,12 @@
+mod types;
+
 use chrono::{Duration, Local};
 use js_sys::JsString;
-use serde_derive::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+use types::{ChartData, ChartSubData, Downloads};
 use wasm_bindgen::prelude::*;
 
 const ERROR: &str = "Error to aggregate data";
-
-#[derive(Debug, Deserialize, Serialize)]
-struct VersionDownloads {
-    date: String,
-    downloads: usize,
-    version: usize,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-struct Downloads {
-    version_downloads: Vec<VersionDownloads>,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-struct ChartSubData {
-    name: String,
-    downloads: Vec<usize>,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct ChartData {
-    dates: Vec<String>,
-    data: Vec<ChartSubData>,
-}
 
 #[wasm_bindgen]
 pub fn uniform_data(
