@@ -42,15 +42,21 @@ echarts.use([
   CanvasRenderer,
 ]);
 
+export interface EchartsEventFunction {
+  eventName: string;
+  query?: string | object;
+  handler: (param: echarts.ECElementEvent) => void;
+}
+
 interface Props {
-  onClick?: (param: echarts.ECElementEvent) => void;
   option: EChartsOption;
+  eventFunctions?: EchartsEventFunction[];
   settings?: SetOptionOpts;
   style?: CSSProperties;
   group?: string;
 }
 
-const ReactECharts: React.FC<Props> = ({ option, style, group, settings = {}, onClick }: Props) => {
+const ReactECharts: React.FC<Props> = ({ option, style, group, settings = {}, eventFunctions }: Props) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const [width, height] = useResize(chartRef);
   const [echart, setEchart] = useState<echarts.ECharts | undefined>(undefined);
@@ -58,7 +64,9 @@ const ReactECharts: React.FC<Props> = ({ option, style, group, settings = {}, on
   useEffect(() => {
     if (chartRef.current && !echart) {
       const chart = echarts.init(chartRef.current, null, { renderer: 'canvas', useDirtyRect: false });
-      chart.on('click', onClick ?? (() => undefined));
+      for (const eventFunc of eventFunctions ?? []) {
+        chart.on(eventFunc.eventName, eventFunc.query, eventFunc.handler);
+      }
       chart.getZr().on('dblclick', () => {
         chart.dispatchAction({ type: 'dataZoom', start: 0, end: 100 });
       });
@@ -72,7 +80,7 @@ const ReactECharts: React.FC<Props> = ({ option, style, group, settings = {}, on
     return () => {
       echart?.dispose();
     };
-  }, [echart, onClick, group]);
+  }, [echart, group, eventFunctions]);
 
   useEffect(() => {
     echart?.resize({ width, height });
