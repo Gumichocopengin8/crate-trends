@@ -19,6 +19,7 @@ import ChartSkelton from 'components/skelton/chart/ChartSkelton';
 const CratesCompare = (): JSX.Element => {
   const router = useRouter();
   const { crate_names } = router.query;
+  const title = `${String(crate_names).split('+').join(', ')} | Crate Trends`;
 
   const [isClient, setIsClient] = useState<boolean>(false);
   const [crateNames, setCrateNames] = useState<string[]>([]);
@@ -39,7 +40,7 @@ const CratesCompare = (): JSX.Element => {
   return (
     <div css={Wrapper} key={crateNames.join('+')}>
       <Head>
-        <title>{String(crate_names).split('+').join(', ')} | Crate Trends</title>
+        <title>{title}</title>
       </Head>
       <InputForm />
       <Suspense fallback={<ChartSkelton />}>
