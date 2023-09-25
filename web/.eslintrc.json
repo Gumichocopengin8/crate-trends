@@ -35,5 +35,6 @@
   "globals": {
     "window": true,
     "process": true
-  }
+  },
+  "ignorePatterns": ["src/web_assembly/pkg"]
 }
