@@ -13,6 +13,7 @@ interface Props {
 const CrateSizeChart = ({ versionList }: Props): JSX.Element => {
   const option: EChartsOption = useMemo(() => {
     return {
+      animation: false,
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
