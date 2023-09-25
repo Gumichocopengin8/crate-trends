@@ -230,13 +230,21 @@ function __wbg_get_imports() {
   imports.wbg.__wbindgen_object_drop_ref = function (arg0) {
     takeObject(arg0);
   };
-  imports.wbg.__wbg_getTimezoneOffset_8aee3445f323973e = function (arg0) {
-    const ret = getObject(arg0).getTimezoneOffset();
-    return ret;
-  };
   imports.wbg.__wbindgen_string_new = function (arg0, arg1) {
     const ret = getStringFromWasm0(arg0, arg1);
     return addHeapObject(ret);
+  };
+  imports.wbg.__wbindgen_number_new = function (arg0) {
+    const ret = arg0;
+    return addHeapObject(ret);
+  };
+  imports.wbg.__wbg_new_cd59bfc8881f487b = function (arg0) {
+    const ret = new Date(getObject(arg0));
+    return addHeapObject(ret);
+  };
+  imports.wbg.__wbg_getTimezoneOffset_8aee3445f323973e = function (arg0) {
+    const ret = getObject(arg0).getTimezoneOffset();
+    return ret;
   };
   imports.wbg.__wbindgen_throw = function (arg0, arg1) {
     throw new Error(getStringFromWasm0(arg0, arg1));
