@@ -7,14 +7,14 @@
 
 import axiosBase from 'axios';
 
-const urlBase = process.env.BASE_URL;
+const urlBase = process.env['BASE_URL'];
 const headers = {
   'Content-Type': 'application/json',
   // 'X-Requested-With': 'XMLHttpRequest',
 };
 
 export const axios = axiosBase.create({
-  baseURL: urlBase,
+  baseURL: urlBase ?? 'ERROR',
   headers,
   responseType: 'json',
 });

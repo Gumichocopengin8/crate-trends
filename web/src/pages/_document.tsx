@@ -21,7 +21,7 @@ const Document = () => {
             outline: 0;
           }`}</style>
         <meta name="google-site-verification" content="koqh25055ZnqyD5EXDbfBKNBI9TtoklhiGvSLAjOgD0" />
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_TAG_ID}`} />
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env['GOOGLE_ANALYTICS_TAG_ID']}`} />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -29,7 +29,7 @@ const Document = () => {
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
 
-              gtag('config', '${process.env.GOOGLE_ANALYTICS_TAG_ID}');
+              gtag('config', '${process.env['GOOGLE_ANALYTICS_TAG_ID']}');
           `,
           }}
         />

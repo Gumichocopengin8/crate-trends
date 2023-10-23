@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import dayjs from 'dayjs';
 import { axios, cratesURL } from './api_config';
 import { CrateResponse } from 'interfaces/crate';
 import { Downloads } from 'interfaces/downloads';
@@ -15,7 +16,27 @@ export const fetchCrateDataUsingGET = async (crateName: string): Promise<CrateRe
     .then((res) => res.data as CrateResponse)
     .catch((err) => {
       console.error(err);
-      return null;
+      const empty: CrateResponse = {
+        categories: [],
+        crate: {
+          id: '',
+          name: '',
+          downloads: 0,
+          max_version: '',
+          links: {
+            owner_team: '',
+            owner_user: '',
+            owners: '',
+            reverse_dependencies: '',
+            version_downloads: '',
+          },
+          created_at: dayjs().toDate(),
+          updated_at: dayjs().toDate(),
+        },
+        keywords: [],
+        versions: [],
+      };
+      return empty;
     });
 };
 
@@ -25,6 +46,12 @@ export const fetchDownloadDataUsingGET = async (crateName: string): Promise<Down
     .then((res) => res.data as Downloads)
     .catch((err) => {
       console.error(err);
-      return null;
+      const empty: Downloads = {
+        version_downloads: [],
+        meta: {
+          extra_downloads: [],
+        },
+      };
+      return empty;
     });
 };
