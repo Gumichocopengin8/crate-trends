@@ -60,7 +60,7 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
           </Typography>
         </TableCell>
         <TableCell align="right">{crateData.crate.downloads.toLocaleString()}</TableCell>
-        <TableCell align="right">{crateData.crate.recent_downloads.toLocaleString()}</TableCell>
+        <TableCell align="right">{crateData.crate.recent_downloads?.toLocaleString() ?? 'N/A'}</TableCell>
         <TableCell align="right">{dateFormat(crateData.crate.updated_at)}</TableCell>
         <TableCell align="right">{dateFormat(crateData.crate.created_at)}</TableCell>
         <TableCell align="center">

@@ -17,8 +17,10 @@ const useResize = (ref: RefObject<HTMLElement>): [width: number, height: number]
     }
 
     const entry = entries[0];
-    setWidth(entry.contentRect.width);
-    setHeight(entry.contentRect.height);
+    if (entry) {
+      setWidth(entry.contentRect.width);
+      setHeight(entry.contentRect.height);
+    }
   }, []);
 
   useEffect(() => {
@@ -26,12 +28,11 @@ const useResize = (ref: RefObject<HTMLElement>): [width: number, height: number]
       return;
     }
 
-    let resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => handleResize(entries));
+    const resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => handleResize(entries));
     resizeObserver.observe(ref.current);
 
     return () => {
       resizeObserver.disconnect();
-      resizeObserver = null;
     };
   }, [handleResize, ref]);
 

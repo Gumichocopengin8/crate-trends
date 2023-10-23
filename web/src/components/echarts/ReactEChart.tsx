@@ -43,7 +43,7 @@ echarts.use([
 ]);
 
 export interface EchartsEventFunction {
-  eventName: string;
+  eventName: echarts.ElementEvent['type'];
   query?: string | object;
   handler: (param: echarts.ECElementEvent) => void;
 }
@@ -65,7 +65,7 @@ const ReactECharts: React.FC<Props> = ({ option, style, group, settings = {}, ev
     if (chartRef.current && !echart) {
       const chart = echarts.init(chartRef.current, null, { renderer: 'canvas', useDirtyRect: false });
       for (const eventFunc of eventFunctions ?? []) {
-        chart.on(eventFunc.eventName, eventFunc.query, eventFunc.handler);
+        chart.on(eventFunc.eventName, eventFunc.query ?? '', eventFunc.handler);
       }
       chart.getZr().on('dblclick', () => {
         chart.dispatchAction({ type: 'dataZoom', start: 0, end: 100 });
