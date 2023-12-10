@@ -11,14 +11,17 @@ use axum::{
     extract::Path,
     http::{
         header::{ACCEPT, AUTHORIZATION},
-        HeaderValue, Method, StatusCode,
+        request, HeaderValue, Method, StatusCode,
     },
     response::IntoResponse,
     routing::get,
     Json, Router,
 };
 use std::time::Duration;
-use tower_http::{cors::CorsLayer, trace::TraceLayer};
+use tower_http::{
+    cors::{AllowOrigin, CorsLayer},
+    trace::TraceLayer,
+};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
@@ -58,7 +61,12 @@ fn app() -> Router {
         )
         .layer(
             CorsLayer::new()
-                .allow_origin("http://localhost:3000".parse::<HeaderValue>().unwrap())
+                .allow_origin(AllowOrigin::predicate(
+                    |origin: &HeaderValue, _request_parts: &request::Parts| {
+                        origin.as_bytes() == b"http://localhost:3000"
+                            || origin.as_bytes().ends_with(b".vercel.app")
+                    },
+                ))
                 .allow_methods([Method::GET])
                 .allow_headers([AUTHORIZATION, ACCEPT])
                 .max_age(Duration::from_secs(60) * 5),
