@@ -8,10 +8,10 @@ mod agent;
 use agent::generate_async_client;
 use anyhow::Result;
 use axum::{
-    extract::{MatchedPath, Path},
+    extract::Path,
     http::{
         header::{ACCEPT, AUTHORIZATION},
-        HeaderValue, Method, Request, StatusCode,
+        HeaderValue, Method, StatusCode,
     },
     response::IntoResponse,
     routing::get,
@@ -19,7 +19,6 @@ use axum::{
 };
 use std::time::Duration;
 use tower_http::{cors::CorsLayer, trace::TraceLayer};
-use tracing::info_span;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
@@ -64,21 +63,7 @@ fn app() -> Router {
                 .allow_headers([AUTHORIZATION, ACCEPT])
                 .max_age(Duration::from_secs(60) * 5),
         )
-        .layer(
-            TraceLayer::new_for_http().make_span_with(|request: &Request<_>| {
-                let matched_path = request
-                    .extensions()
-                    .get::<MatchedPath>()
-                    .map(MatchedPath::as_str);
-
-                info_span!(
-                    "http_request",
-                    method = ?request.method(),
-                    matched_path,
-                    some_other_field = tracing::field::Empty,
-                )
-            }),
-        )
+        .layer(TraceLayer::new_for_http())
 }
 
 async fn get_crate_data(Path(id): Path<String>) -> impl IntoResponse {
