@@ -15,10 +15,18 @@ rust-version = "1.71"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-actix-web = "4"
-actix-rt = "2"
-actix-cors = "0.6"
 anyhow = "1"
+axum = "0.7.2"
 crates_io_api = "0.8"
 env_logger = "0.10"
+http-body-util = "0.1.0"
 serde_json = "1.0.107"
+tokio = { version = "1.35.0", features = ["full"] }
+tower = "0.4.13"
+tower-http = { version = "0.5.0", features = ["cors", "trace"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[profile.release]
+lto = true
+codegen-units = 1

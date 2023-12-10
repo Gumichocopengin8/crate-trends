@@ -5,15 +5,31 @@
  * LICENSE file in the root directory of this source tree.
  */
 mod agent;
-use actix_cors::Cors;
-use actix_web::{http::header, middleware::Logger, web, App, HttpResponse, HttpServer};
 use agent::generate_async_client;
 use anyhow::Result;
+use axum::{
+    extract::Path,
+    http::{
+        header::{ACCEPT, AUTHORIZATION},
+        HeaderValue, Method, StatusCode,
+    },
+    response::IntoResponse,
+    routing::get,
+    Json, Router,
+};
+use std::time::Duration;
+use tower_http::{cors::CorsLayer, trace::TraceLayer};
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-#[actix_rt::main]
-async fn main() -> std::io::Result<()> {
-    std::env::set_var("RUST_LOG", "actix_web=info");
-    env_logger::init();
+#[tokio::main]
+async fn main() {
+    tracing_subscriber::registry()
+        .with(
+            tracing_subscriber::EnvFilter::try_from_default_env()
+                .unwrap_or_else(|_| "debug".into()),
+        )
+        .with(tracing_subscriber::fmt::layer())
+        .init();
 
     let host: String = std::env::var("HOST")
         .unwrap_or_else(|_| "0.0.0.0".to_string())
@@ -25,57 +41,46 @@ async fn main() -> std::io::Result<()> {
         .parse()
         .expect("PORT must be a number");
 
-    if host == "127.0.0.1" {
-        println!("Server Start: http://localhost:{}", port);
-    } else {
-        println!("{}:{}", host, port);
-    }
-
-    HttpServer::new(|| {
-        let cors = Cors::default()
-            .allowed_origin("http://localhost:3000")
-            .allowed_origin_fn(|origin, _req_head| origin.as_bytes().ends_with(b".vercel.app"))
-            .allowed_methods(vec!["GET"])
-            .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
-            .allowed_header(header::CONTENT_TYPE)
-            .max_age(3600);
-
-        App::new()
-            .wrap(cors)
-            .wrap(Logger::default())
-            .route("/up", web::get().to(index))
-            .service(
-                web::scope("/api/v1/crates")
-                    .route("/{id}", web::get().to(get_crate_data))
-                    .route("/{id}/downloads", web::get().to(get_crate_recent_downloads)),
-            )
-    })
-    .bind(format!("{}:{}", host, port))?
-    .run()
-    .await
+    let listener = tokio::net::TcpListener::bind(format!("{host}:{port}"))
+        .await
+        .unwrap();
+    println!("listening on {}", listener.local_addr().unwrap());
+    axum::serve(listener, app()).await.unwrap();
 }
 
-async fn index() -> HttpResponse {
-    HttpResponse::Ok().body("You're up!!")
+fn app() -> Router {
+    Router::new()
+        .route("/up", get(|| async { "You're up!!" }))
+        .route("/api/v1/crates/:id", get(get_crate_data))
+        .route(
+            "/api/v1/crates/:id/downloads",
+            get(get_crate_recent_downloads),
+        )
+        .layer(
+            CorsLayer::new()
+                .allow_origin("http://localhost:3000".parse::<HeaderValue>().unwrap())
+                .allow_methods([Method::GET])
+                .allow_headers([AUTHORIZATION, ACCEPT])
+                .max_age(Duration::from_secs(60) * 5),
+        )
+        .layer(TraceLayer::new_for_http())
 }
 
-async fn get_crate_data(path: web::Path<String>) -> HttpResponse {
-    let crate_name = path.into_inner();
+async fn get_crate_data(Path(id): Path<String>) -> impl IntoResponse {
+    let crate_name = id;
     let crate_data = fetch_crate(&crate_name).await;
     match crate_data {
-        Ok(value) => HttpResponse::Ok().json(value),
-        Err(_) => HttpResponse::Ok().json(()),
+        Ok(value) => Json(value).into_response(),
+        Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     }
 }
 
-// get the number of a crate downloads within last 90 days
-// it doesnt actually download data to local
-async fn get_crate_recent_downloads(path: web::Path<String>) -> HttpResponse {
-    let crate_name = path.into_inner();
+async fn get_crate_recent_downloads(Path(id): Path<String>) -> impl IntoResponse {
+    let crate_name = id;
     let download_data = fetch_recent_downloads(&crate_name).await;
     match download_data {
-        Ok(value) => HttpResponse::Ok().json(value),
-        Err(_) => HttpResponse::Ok().json(()),
+        Ok(value) => Json(value).into_response(),
+        Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     }
 }
 
@@ -98,70 +103,77 @@ async fn fetch_recent_downloads(crate_name: &str) -> Result<crates_io_api::Crate
 #[cfg(test)]
 mod tests {
     use super::*;
-    use actix_web::{
-        http::{self, header::ContentType},
-        test,
-        web::Bytes,
+    use axum::{
+        body::Body,
+        extract::Path,
+        http::{self, Request, StatusCode},
     };
-    use crates_io_api::{CrateDownloads, CrateResponse};
+    use http_body_util::BodyExt; // for `collect`
+    use tower::ServiceExt; // for `call`, `oneshot`, and `ready`
 
     /// Unit tests
 
-    #[actix_web::test]
-    async fn test_index_ok() {
-        let res = index().await;
+    #[tokio::test]
+    async fn should_get_crate_data_ok() {
+        let path = Path("futures".to_string());
+        let res = get_crate_data(path).await.into_response();
         assert_eq!(res.status(), http::StatusCode::OK);
     }
 
-    #[actix_web::test]
-    async fn test_get_crate_data_ok() {
-        let path: web::Path<String> = web::Path::from("tokio".to_string());
-        let res = get_crate_data(path).await;
+    #[tokio::test]
+    async fn should_get_crate_recent_downloads_ok() {
+        let path = Path("futures".to_string());
+        let res = get_crate_data(path).await.into_response();
         assert_eq!(res.status(), http::StatusCode::OK);
     }
-
-    #[actix_web::test]
-    async fn test_get_crate_recent_downloads_ok() {
-        let path: web::Path<String> = web::Path::from("tokio".to_string());
-        let res = get_crate_recent_downloads(path).await;
-        assert_eq!(res.status(), http::StatusCode::OK);
-    }
-
-    // --------------------
 
     /// Integration Tests
 
-    #[actix_web::test]
-    async fn test_index_get() {
-        let app = test::init_service(App::new().route("/", web::get().to(index))).await;
-        let req = test::TestRequest::default()
-            .insert_header(ContentType::plaintext())
-            .to_request();
-        let res = test::call_service(&app, req).await;
-        assert!(res.status().is_success());
-        let result = test::read_body(res).await;
-        assert_eq!(result, Bytes::from_static(b"You're up!!"));
+    #[tokio::test]
+    async fn should_health_check() {
+        let app = app();
+
+        let response = app
+            .oneshot(Request::builder().uri("/up").body(Body::empty()).unwrap())
+            .await
+            .unwrap();
+
+        assert_eq!(response.status(), StatusCode::OK);
+        let body = response.into_body().collect().await.unwrap().to_bytes();
+        assert_eq!(body, "You're up!!");
     }
 
-    #[actix_web::test]
-    async fn test_get_crate_data_get() {
-        let app =
-            test::init_service(App::new().route("/{id}", web::get().to(get_crate_data))).await;
-        let req = test::TestRequest::get().uri("/tokio").to_request();
-        let res: CrateResponse = test::call_and_read_body_json(&app, req).await;
-        assert_eq!(res.crate_data.id, "tokio");
+    #[tokio::test]
+    async fn should_get_tokio_crate_info() {
+        let app = app();
+
+        let response = app
+            .oneshot(
+                Request::builder()
+                    .uri("/api/v1/crates/tokio")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+
+        assert_eq!(response.status(), StatusCode::OK);
     }
 
-    #[actix_web::test]
-    async fn test_get_crate_recent_downloads_get() {
-        let app = test::init_service(
-            App::new().route("/{id}/downloads", web::get().to(get_crate_recent_downloads)),
-        )
-        .await;
-        let req = test::TestRequest::get()
-            .uri("/tokio/downloads")
-            .to_request();
-        let res: CrateDownloads = test::call_and_read_body_json(&app, req).await;
-        assert!(!res.version_downloads.is_empty());
+    #[tokio::test]
+    async fn should_not_exist_url() {
+        let app = app();
+
+        let response = app
+            .oneshot(
+                Request::builder()
+                    .uri("/api/v1/notexist")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+
+        assert_eq!(response.status(), StatusCode::NOT_FOUND);
     }
 }
