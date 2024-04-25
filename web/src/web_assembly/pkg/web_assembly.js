@@ -220,11 +220,11 @@ function __wbg_get_imports() {
     getInt32Memory0()[arg0 / 4 + 1] = len1;
     getInt32Memory0()[arg0 / 4 + 0] = ptr1;
   };
-  imports.wbg.__wbg_new0_7a6141101f2206da = function () {
+  imports.wbg.__wbg_new0_7d84e5b2cd9fdc73 = function () {
     const ret = new Date();
     return addHeapObject(ret);
   };
-  imports.wbg.__wbg_getTime_0e03c3f524be31ef = function (arg0) {
+  imports.wbg.__wbg_getTime_2bc4375165f02d15 = function (arg0) {
     const ret = getObject(arg0).getTime();
     return ret;
   };
@@ -239,11 +239,11 @@ function __wbg_get_imports() {
     const ret = arg0;
     return addHeapObject(ret);
   };
-  imports.wbg.__wbg_new_a9d80688888b4894 = function (arg0) {
+  imports.wbg.__wbg_new_cf3ec55744a78578 = function (arg0) {
     const ret = new Date(getObject(arg0));
     return addHeapObject(ret);
   };
-  imports.wbg.__wbg_getTimezoneOffset_840b552f34917133 = function (arg0) {
+  imports.wbg.__wbg_getTimezoneOffset_38257122e236c190 = function (arg0) {
     const ret = getObject(arg0).getTimezoneOffset();
     return ret;
   };
