@@ -37,9 +37,10 @@ export default tseslint.config(eslint.configs.recommended, ...tseslint.configs.r
       ecmaFeatures: {
         jsx: true,
       },
+      ecmaVersion: 'latest',
       project: true,
       tsconfigRootDir: import.meta.dirname,
     },
   },
-  ignores: ['src/web_assembly/pkg'],
+  ignores: ['src/web_assembly/pkg/**/*'],
 });
