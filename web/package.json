@@ -28,6 +28,7 @@
     "recoil": "^0.7.7"
   },
   "devDependencies": {
+    "@eslint/js": "^9.3.0",
     "@playwright/test": "^1.44.0",
     "@types/node": "^20.12.12",
     "@types/react": "^18.3.2",
@@ -42,6 +43,7 @@
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5",
+    "typescript-eslint": "^7.9.0",
     "wasm-pack": "^0.12.1"
   },
   "husky": {
