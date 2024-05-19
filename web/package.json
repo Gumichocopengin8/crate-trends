@@ -15,8 +15,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.16",
-    "@mui/material": "^5.15.16",
+    "@mui/icons-material": "^5.15.18",
+    "@mui/material": "^5.15.18",
     "axios": "^1.6.8",
     "dayjs": "^1.11.11",
     "echarts": "^5.5.0",
@@ -24,15 +24,16 @@
     "pretty-bytes": "^6.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^7.51.3",
+    "react-hook-form": "^7.51.4",
     "recoil": "^0.7.7"
   },
   "devDependencies": {
-    "@playwright/test": "^1.43.1",
-    "@types/node": "^20.12.8",
-    "@types/react": "^18.3.1",
-    "@typescript-eslint/eslint-plugin": "^7.8.0",
-    "@typescript-eslint/parser": "^7.8.0",
+    "@eslint/js": "^9.3.0",
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.12.12",
+    "@types/react": "^18.3.2",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "@typescript-eslint/parser": "^7.9.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.3",
     "eslint-config-prettier": "^9.1.0",
@@ -42,6 +43,7 @@
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5",
+    "typescript-eslint": "^7.9.0",
     "wasm-pack": "^0.12.1"
   },
   "husky": {
@@ -52,7 +54,7 @@
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "prettier --write",
-      "eslint --fix './src/**/*.{js,ts,tsx}'"
+      "eslint --fix './src/**/*.{js,ts,tsx}' --ignore-pattern 'src/web_assembly/pkg/**/*'"
     ],
     "*.scss": [
       "prettier --write"
