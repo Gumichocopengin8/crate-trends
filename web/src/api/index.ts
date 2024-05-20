@@ -6,3 +6,4 @@
  */
 
 export * from './crates_api';
+export * from './swr';

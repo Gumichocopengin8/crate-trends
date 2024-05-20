@@ -8,12 +8,13 @@
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { css } from '@emotion/react';
-import { crateDownloadDataResultsState } from 'recoil/atoms';
 import { Typography } from '@mui/material';
 import ReactECharts from 'components/echarts/ReactEChart';
 import type { EChartsOption } from 'echarts';
 import { uniform_data } from 'web_assembly/pkg/web_assembly';
 import { wasmInitSelector } from 'recoil/selectors';
+import { useCrateDownloadDataResultsQuery } from 'api';
+import ChartSkelton from 'components/skelton/chart/ChartSkelton';
 
 interface Props {
   crateNames: string[];
@@ -29,12 +30,12 @@ interface ChartData {
 }
 
 const DownloadChart = ({ crateNames }: Props): JSX.Element => {
-  const crateDownloadDataResults = useRecoilValue(crateDownloadDataResultsState(crateNames));
+  const { crateDownloadDataResults, isLoading } = useCrateDownloadDataResultsQuery(crateNames);
   const isWasmLoaded = useRecoilValue(wasmInitSelector);
 
   const uniformedData: ChartData = useMemo(() => {
     const t1 = performance.now();
-    const data: ChartData = JSON.parse(uniform_data(crateNames, JSON.stringify(crateDownloadDataResults)));
+    const data: ChartData = JSON.parse(uniform_data(crateNames, JSON.stringify(crateDownloadDataResults ?? [])));
     const t2 = performance.now();
     console.log(t2 - t1);
     return data;
@@ -61,6 +62,11 @@ const DownloadChart = ({ crateNames }: Props): JSX.Element => {
     yAxis: { type: 'value' },
     series: uniformedData.data.map((d) => ({ data: d.downloads, name: d.name, type: 'line' })),
   };
+
+  // TODO: remove this when swr supports React Suspense
+  if (isLoading) {
+    return <ChartSkelton />;
+  }
 
   return (
     <section>

@@ -7,16 +7,21 @@
 
 import { Table, TableBody, TableContainer, Paper, Typography } from '@mui/material';
 import StatsTableHead from 'components/shared/table/StatsTableHead';
-import { useRecoilValue } from 'recoil';
-import { crateDataResultsState } from 'recoil/atoms';
 import CrateTableRow from './CrateTableRow';
+import { useCrateDataResultsQuery } from 'api';
+import TableSkelton from 'components/skelton/table/TableSkelton';
 
 interface Props {
   crateNames: string[];
 }
 
 const CratesTable = ({ crateNames }: Props): JSX.Element => {
-  const crateDataResults = useRecoilValue(crateDataResultsState(crateNames));
+  const { crateDataResults, isLoading } = useCrateDataResultsQuery(crateNames);
+
+  // TODO: remove this when swr supports React Suspense
+  if (isLoading) {
+    return <TableSkelton crateNames={crateNames} />;
+  }
 
   return (
     <section>
