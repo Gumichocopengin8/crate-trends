@@ -1,12 +1,13 @@
 {
   "name": "web_assembly",
+  "type": "module",
   "version": "0.1.0",
   "files": [
     "web_assembly_bg.wasm",
     "web_assembly.js",
     "web_assembly.d.ts"
   ],
-  "module": "web_assembly.js",
+  "main": "web_assembly.js",
   "types": "web_assembly.d.ts",
   "sideEffects": [
     "./snippets/*"
