@@ -99,6 +99,29 @@ function getDataViewMemory0() {
   return cachedDataViewMemory0;
 }
 
+let heap_next = heap.length;
+
+function dropObject(idx) {
+  if (idx < 132) return;
+  heap[idx] = heap_next;
+  heap_next = idx;
+}
+
+function takeObject(idx) {
+  const ret = getObject(idx);
+  dropObject(idx);
+  return ret;
+}
+
+function addHeapObject(obj) {
+  if (heap_next === heap.length) heap.push(heap.length + 1);
+  const idx = heap_next;
+  heap_next = heap[idx];
+
+  heap[idx] = obj;
+  return idx;
+}
+
 const cachedTextDecoder =
   typeof TextDecoder !== 'undefined'
     ? new TextDecoder('utf-8', { ignoreBOM: true, fatal: true })
@@ -115,29 +138,6 @@ if (typeof TextDecoder !== 'undefined') {
 function getStringFromWasm0(ptr, len) {
   ptr = ptr >>> 0;
   return cachedTextDecoder.decode(getUint8ArrayMemory0().subarray(ptr, ptr + len));
-}
-
-let heap_next = heap.length;
-
-function addHeapObject(obj) {
-  if (heap_next === heap.length) heap.push(heap.length + 1);
-  const idx = heap_next;
-  heap_next = heap[idx];
-
-  heap[idx] = obj;
-  return idx;
-}
-
-function dropObject(idx) {
-  if (idx < 132) return;
-  heap[idx] = heap_next;
-  heap_next = idx;
-}
-
-function takeObject(idx) {
-  const ret = getObject(idx);
-  dropObject(idx);
-  return ret;
 }
 
 function passArrayJsValueToWasm0(array, malloc) {
@@ -182,7 +182,7 @@ async function __wbg_load(module, imports) {
       } catch (e) {
         if (module.headers.get('Content-Type') != 'application/wasm') {
           console.warn(
-            '`WebAssembly.instantiateStreaming` failed because your server does not serve wasm with `application/wasm` MIME type. Falling back to `WebAssembly.instantiate` which is slower. Original error:\n',
+            '`WebAssembly.instantiateStreaming` failed because your server does not serve Wasm with `application/wasm` MIME type. Falling back to `WebAssembly.instantiate` which is slower. Original error:\n',
             e
           );
         } else {
@@ -215,17 +215,13 @@ function __wbg_get_imports() {
     getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
     getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
   };
-  imports.wbg.__wbg_new0_65387337a95cf44d = function () {
+  imports.wbg.__wbg_new0_218ada33b570be35 = function () {
     const ret = new Date();
     return addHeapObject(ret);
   };
-  imports.wbg.__wbg_getTime_91058879093a1589 = function (arg0) {
+  imports.wbg.__wbg_getTime_41225036a0393d63 = function (arg0) {
     const ret = getObject(arg0).getTime();
     return ret;
-  };
-  imports.wbg.__wbindgen_string_new = function (arg0, arg1) {
-    const ret = getStringFromWasm0(arg0, arg1);
-    return addHeapObject(ret);
   };
   imports.wbg.__wbindgen_object_drop_ref = function (arg0) {
     takeObject(arg0);
@@ -234,13 +230,17 @@ function __wbg_get_imports() {
     const ret = arg0;
     return addHeapObject(ret);
   };
-  imports.wbg.__wbg_new_7982fb43cfca37ae = function (arg0) {
+  imports.wbg.__wbg_new_6fb55f037293191b = function (arg0) {
     const ret = new Date(getObject(arg0));
     return addHeapObject(ret);
   };
-  imports.wbg.__wbg_getTimezoneOffset_c9929a3cc94500fe = function (arg0) {
+  imports.wbg.__wbg_getTimezoneOffset_93f7d384c8ade3be = function (arg0) {
     const ret = getObject(arg0).getTimezoneOffset();
     return ret;
+  };
+  imports.wbg.__wbindgen_string_new = function (arg0, arg1) {
+    const ret = getStringFromWasm0(arg0, arg1);
+    return addHeapObject(ret);
   };
   imports.wbg.__wbindgen_throw = function (arg0, arg1) {
     throw new Error(getStringFromWasm0(arg0, arg1));
@@ -263,8 +263,13 @@ function __wbg_finalize_init(instance, module) {
 function initSync(module) {
   if (wasm !== undefined) return wasm;
 
-  if (typeof module !== 'undefined' && Object.getPrototypeOf(module) === Object.prototype) ({ module } = module);
-  else console.warn('using deprecated parameters for `initSync()`; pass a single object instead');
+  if (typeof module !== 'undefined') {
+    if (Object.getPrototypeOf(module) === Object.prototype) {
+      ({ module } = module);
+    } else {
+      console.warn('using deprecated parameters for `initSync()`; pass a single object instead');
+    }
+  }
 
   const imports = __wbg_get_imports();
 
@@ -282,9 +287,13 @@ function initSync(module) {
 async function __wbg_init(module_or_path) {
   if (wasm !== undefined) return wasm;
 
-  if (typeof module_or_path !== 'undefined' && Object.getPrototypeOf(module_or_path) === Object.prototype)
-    ({ module_or_path } = module_or_path);
-  else console.warn('using deprecated parameters for the initialization function; pass a single object instead');
+  if (typeof module_or_path !== 'undefined') {
+    if (Object.getPrototypeOf(module_or_path) === Object.prototype) {
+      ({ module_or_path } = module_or_path);
+    } else {
+      console.warn('using deprecated parameters for the initialization function; pass a single object instead');
+    }
+  }
 
   if (typeof module_or_path === 'undefined') {
     module_or_path = new URL('web_assembly_bg.wasm', import.meta.url);
