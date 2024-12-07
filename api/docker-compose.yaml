@@ -1,0 +1,6 @@
+services:
+  crate_trends_api:
+    build:
+      context: .  # Dockerfile in the same directory
+    ports:
+      - "8080:8080"

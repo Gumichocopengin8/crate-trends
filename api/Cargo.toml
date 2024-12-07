@@ -31,3 +31,4 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 [profile.release]
 lto = true
 codegen-units = 1
+strip = true # same as strip command on Linux
