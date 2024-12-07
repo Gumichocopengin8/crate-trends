@@ -20,7 +20,7 @@ axum = { version = "0.7.9", features = ["http2"] }
 crates_io_api = "0.11"
 http-body-util = "0.1.2"
 serde_json = "1"
-tokio = { version = "1.41.1", features = ["full"] }
+tokio = { version = "1.42.0", features = ["full"] }
 tower = { version = "0.5.1", features = [
   "util", # `util` feature for unit test (oneshot func etc)
 ] }
