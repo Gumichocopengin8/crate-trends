@@ -4,8 +4,8 @@ WORKDIR /app
 COPY . .
 RUN cargo build --release
 
-FROM amazonlinux:2023
-RUN yum install -y openssl openssl-devel
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023-minimal
+RUN dnf install -y openssl openssl-devel
 COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.8.4 /lambda-adapter /opt/extensions/lambda-adapter
 COPY --from=builder /app/target/release/crate_trends_api /app
 CMD ["/app"]

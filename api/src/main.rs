@@ -19,6 +19,7 @@ use axum::{
 };
 use std::time::Duration;
 use tower_http::{
+    compression::CompressionLayer,
     cors::{AllowOrigin, CorsLayer},
     trace::TraceLayer,
 };
@@ -72,6 +73,13 @@ fn app() -> Router {
                 .max_age(Duration::from_secs(60) * 5),
         )
         .layer(TraceLayer::new_for_http())
+        .layer(
+            CompressionLayer::new()
+                .br(true)
+                .gzip(true)
+                .zstd(true)
+                .deflate(true),
+        )
 }
 
 async fn get_crate_data(Path(id): Path<String>) -> impl IntoResponse {

@@ -24,11 +24,15 @@ tokio = { version = "1.42.0", features = ["full"] }
 tower = { version = "0.5.1", features = [
   "util", # `util` feature for unit test (oneshot func etc)
 ] }
-tower-http = { version = "0.6.2", features = ["cors", "trace"] }
+tower-http = { version = "0.6.2", features = [
+  "cors",
+  "trace",
+  "compression-full",
+] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 [profile.release]
 lto = true
 codegen-units = 1
-strip = true # same as strip command on Linux
+strip = true      # same as strip command on Linux
