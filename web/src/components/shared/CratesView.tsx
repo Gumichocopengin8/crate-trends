@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useEffect, useState, startTransition, Suspense } from 'react';
+import { useEffect, useState, startTransition, Suspense, JSX } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';

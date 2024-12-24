@@ -10,6 +10,7 @@ import StatsTableHead from 'components/shared/table/StatsTableHead';
 import CrateTableRow from './CrateTableRow';
 import { useCrateDataResultsQuery } from 'api';
 import TableSkelton from 'components/skelton/table/TableSkelton';
+import { JSX } from 'react';
 
 interface Props {
   crateNames: string[];

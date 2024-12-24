@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect } from 'react';
-import { RecoilRoot } from 'recoil';
+import React, { useState, useEffect, JSX } from 'react';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -36,22 +35,20 @@ const MyApp = (props: AppProps): JSX.Element => {
 
   return (
     <React.StrictMode>
-      <RecoilRoot>
-        <div css={Wrapper}>
-          <Head>
-            <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
-          </Head>
-          <Header />
-          {isLoading && (
-            <div css={PageIndicator}>
-              <img src="/ferris.png" alt="ferris icon" />
-              <CircularProgress size={36} />
-            </div>
-          )}
-          <Component {...pageProps} />
-          <Footer />
-        </div>
-      </RecoilRoot>
+      <div css={Wrapper}>
+        <Head>
+          <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+        </Head>
+        <Header />
+        {isLoading && (
+          <div css={PageIndicator}>
+            <img src="/ferris.png" alt="ferris icon" />
+            <CircularProgress size={36} />
+          </div>
+        )}
+        <Component {...pageProps} />
+        <Footer />
+      </div>
     </React.StrictMode>
   );
 };

@@ -4,7 +4,7 @@ import { css } from '@emotion/react';
 import prettyBytes from 'pretty-bytes';
 import type { EChartsOption } from 'echarts';
 import { Typography } from '@mui/material';
-import { useMemo } from 'react';
+import { JSX, useMemo } from 'react';
 
 interface Props {
   versionList: Version[];

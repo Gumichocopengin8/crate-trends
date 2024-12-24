@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { JSX } from 'react';
 import { useRouter } from 'next/router';
 import { Typography, Link, FormControl, InputAdornment, IconButton, OutlinedInput } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';

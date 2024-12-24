@@ -7,6 +7,7 @@
 
 import Link from 'next/link';
 import { css } from '@emotion/react';
+import { JSX } from 'react';
 
 const Header = (): JSX.Element => {
   return (

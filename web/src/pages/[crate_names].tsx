@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { JSX } from 'react';
 import CratesView from 'components/shared/CratesView';
 import Spinner from 'components/shared/Spinner';
 
