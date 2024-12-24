@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { JSX } from 'react';
 
 interface Props {
   loadingMessage?: string;

@@ -7,6 +7,7 @@
 
 import { css } from '@emotion/react';
 import { Divider, Link } from '@mui/material';
+import { JSX } from 'react';
 
 const Footer = (): JSX.Element => {
   return (

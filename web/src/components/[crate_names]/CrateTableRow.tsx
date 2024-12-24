@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useState } from 'react';
+import { JSX, useState } from 'react';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';

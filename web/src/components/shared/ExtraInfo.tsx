@@ -8,6 +8,7 @@
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import { Typography, Link } from '@mui/material';
+import { JSX } from 'react';
 
 const ExtraInfo = (): JSX.Element => {
   const router = useRouter();

@@ -5,16 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
+import { JSX, useEffect, useMemo, useState } from 'react';
 import { css } from '@emotion/react';
 import { Typography } from '@mui/material';
 import ReactECharts from 'components/echarts/ReactEChart';
 import type { EChartsOption } from 'echarts';
 import { uniform_data } from 'web_assembly/pkg/web_assembly';
-import { wasmInitSelector } from 'recoil/selectors';
 import { useCrateDownloadDataResultsQuery } from 'api';
 import ChartSkelton from 'components/skelton/chart/ChartSkelton';
+import wasmInitializer from 'web_assembly/pkg';
 
 interface Props {
   crateNames: string[];
@@ -30,16 +29,38 @@ interface ChartData {
 }
 
 const DownloadChart = ({ crateNames }: Props): JSX.Element => {
+  const [isWasmLoaded, setIsWasmLoaded] = useState<boolean>(false);
   const { crateDownloadDataResults, isLoading } = useCrateDownloadDataResultsQuery(crateNames);
-  const isWasmLoaded = useRecoilValue(wasmInitSelector);
-
   const uniformedData: ChartData = useMemo(() => {
+    if (!isWasmLoaded) {
+      return { dates: [], data: [] };
+    }
     const t1 = performance.now();
     const data: ChartData = JSON.parse(uniform_data(crateNames, JSON.stringify(crateDownloadDataResults ?? [])));
     const t2 = performance.now();
     console.log(t2 - t1);
     return data;
-  }, [crateNames, crateDownloadDataResults]);
+  }, [isWasmLoaded, crateNames, crateDownloadDataResults]);
+
+  // load wasm (web assembly)
+  useEffect(() => {
+    let ignore = false;
+    const loadWasm = async () => {
+      if (ignore) {
+        return;
+      }
+      try {
+        await wasmInitializer();
+        setIsWasmLoaded(true);
+      } catch {
+        setIsWasmLoaded(false);
+      }
+    };
+    loadWasm();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const option: EChartsOption = {
     animation: false,

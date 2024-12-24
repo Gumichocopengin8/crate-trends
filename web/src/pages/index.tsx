@@ -9,6 +9,7 @@ import Head from 'next/head';
 import { css } from '@emotion/react';
 import InputForm from 'components/shared/InputForm';
 import ExtraInfo from 'components/shared/ExtraInfo';
+import { JSX } from 'react';
 
 const Index = (): JSX.Element => {
   return (

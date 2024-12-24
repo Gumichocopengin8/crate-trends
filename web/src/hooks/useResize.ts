@@ -7,7 +7,7 @@
 
 import { RefObject, useCallback, useEffect, useState } from 'react';
 
-const useResize = (ref: RefObject<HTMLElement>): [width: number, height: number] => {
+const useResize = (ref: RefObject<HTMLElement | null>): [width: number, height: number] => {
   const [height, setHeight] = useState<number>(0);
   const [width, setWidth] = useState<number>(0);
 
