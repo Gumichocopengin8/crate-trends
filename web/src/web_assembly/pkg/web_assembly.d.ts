@@ -1,10 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-/**
- * @param {(string)[]} crate_names
- * @param {string} crate_download_data_results
- * @returns {any}
- */
 export function uniform_data(crate_names: string[], crate_download_data_results: string): any;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
