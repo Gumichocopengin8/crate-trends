@@ -55,9 +55,9 @@ async fn main() {
 fn app() -> Router {
     Router::new()
         .route("/up", get(|| async { "You're up!!" }))
-        .route("/api/v1/crates/:id", get(get_crate_data))
+        .route("/api/v1/crates/{id}", get(get_crate_data))
         .route(
-            "/api/v1/crates/:id/downloads",
+            "/api/v1/crates/{id}/downloads",
             get(get_crate_recent_downloads),
         )
         .layer(

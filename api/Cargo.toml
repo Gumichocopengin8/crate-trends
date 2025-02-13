@@ -16,12 +16,12 @@ rust-version = "1.83"
 
 [dependencies]
 anyhow = "1"
-axum = { version = "0.7.9", features = ["http2"] }
+axum = { version = "0.8.1", features = ["http2"] }
 crates_io_api = "0.11"
 http-body-util = "0.1.2"
 serde_json = "1"
-tokio = { version = "1.42.0", features = ["full"] }
-tower = { version = "0.5.1", features = [
+tokio = { version = "1.43.0", features = ["full"] }
+tower = { version = "0.5.2", features = [
   "util", # `util` feature for unit test (oneshot func etc)
 ] }
 tower-http = { version = "0.6.2", features = [
