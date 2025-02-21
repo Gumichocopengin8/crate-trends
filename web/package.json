@@ -55,7 +55,7 @@
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "prettier --write",
-      "eslint --fix './src/**/*.{js,ts,tsx}' --ignore-pattern 'src/web_assembly/pkg/**/*'"
+      "npm run lint-app"
     ],
     "*.scss": [
       "prettier --write"
