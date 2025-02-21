@@ -150,7 +150,7 @@ function passArrayJsValueToWasm0(array, malloc) {
   return ptr;
 }
 /**
- * @param {(string)[]} crate_names
+ * @param {string[]} crate_names
  * @param {string} crate_download_data_results
  * @returns {any}
  */
@@ -207,19 +207,19 @@ async function __wbg_load(module, imports) {
 function __wbg_get_imports() {
   const imports = {};
   imports.wbg = {};
-  imports.wbg.__wbg_getTime_ab8b72009983c537 = function (arg0) {
+  imports.wbg.__wbg_getTime_46267b1c24877e30 = function (arg0) {
     const ret = getObject(arg0).getTime();
     return ret;
   };
-  imports.wbg.__wbg_getTimezoneOffset_ec375e661c590c7a = function (arg0) {
+  imports.wbg.__wbg_getTimezoneOffset_6b5752021c499c47 = function (arg0) {
     const ret = getObject(arg0).getTimezoneOffset();
     return ret;
   };
-  imports.wbg.__wbg_new0_55477545727914d9 = function () {
+  imports.wbg.__wbg_new0_f788a2397c7ca929 = function () {
     const ret = new Date();
     return addHeapObject(ret);
   };
-  imports.wbg.__wbg_new_41257536af60ed14 = function (arg0) {
+  imports.wbg.__wbg_new_31a97dac4f10fab7 = function (arg0) {
     const ret = new Date(getObject(arg0));
     return addHeapObject(ret);
   };
