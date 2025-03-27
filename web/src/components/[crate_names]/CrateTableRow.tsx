@@ -12,7 +12,6 @@ import { css } from '@emotion/react';
 import Link from 'next/link';
 import { Table, TableBody, TableCell, TableHead, TableRow, Collapse, Box, Typography, IconButton } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import LaunchIcon from '@mui/icons-material/Launch';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -54,7 +53,12 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
         </TableCell>
         <TableCell component="th" scope="row">
           <Typography variant="subtitle1" component="h2">
-            <Link css={Anchor} href={`/details/${crateData.crate.name}`}>
+            <Link
+              css={Anchor}
+              href={`https://crates.io/crates/${crateData.crate.name}`}
+              target="_blank"
+              rel="noreferrer"
+            >
               {crateData.crate.name}
             </Link>
           </Typography>
@@ -76,20 +80,6 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
           {crateData.crate.homepage ? (
             <Link css={Anchor} href={crateData.crate.homepage} target="_blank" rel="noreferrer">
               <HomeIcon />
-            </Link>
-          ) : (
-            '-'
-          )}
-        </TableCell>
-        <TableCell align="center">
-          {crateData.crate.homepage ? (
-            <Link
-              css={Anchor}
-              href={`https://crates.io/crates/${crateData.crate.name}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <LaunchIcon />
             </Link>
           ) : (
             '-'
