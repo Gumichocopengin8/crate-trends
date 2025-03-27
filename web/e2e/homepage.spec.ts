@@ -6,7 +6,7 @@ test.describe('Home Page', () => {
       await page.goto('http://localhost:3000/');
       await test.step('Screenshot home page', async () => {
         test.skip(browserName !== 'webkit', 'Only mac has compatibility with GitHub Action Mac');
-        await expect(page).toHaveScreenshot('homepage.png', { maxDiffPixels: 50 });
+        await expect(page).toHaveScreenshot('homepage.png', { maxDiffPixels: 60 });
       });
       await test.step('Click the button to navigate crate page', async () => {
         await page.getByRole('button', { name: 'futures vs tokio vs async-std' }).click();

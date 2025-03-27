@@ -28,8 +28,12 @@ const ExtraInfo = (): JSX.Element => {
             <Link onClick={() => onClickExplore('/futures+tokio+async-std')} variant="subtitle1" component="button">
               futures vs tokio vs async-std
             </Link>
-            <Link onClick={() => onClickExplore('/actix-web+rocket+iron+warp')} variant="subtitle1" component="button">
-              actix-web vs rocket vs iron vs warp
+            <Link
+              onClick={() => onClickExplore('/axum+actix-web+rocket+iron+warp')}
+              variant="subtitle1"
+              component="button"
+            >
+              axum vs actix-web vs rocket vs iron vs warp
             </Link>
             <Link onClick={() => onClickExplore('/yew+stdweb+percy')} variant="subtitle1" component="button">
               yew vs stdweb vs percy
