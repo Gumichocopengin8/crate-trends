@@ -12,7 +12,6 @@ const StatsTableHead = () => {
         <TableCell align="right">Created At</TableCell>
         <TableCell align="center">Doc</TableCell>
         <TableCell align="center">Homepage</TableCell>
-        <TableCell align="center">Crates.io</TableCell>
         <TableCell align="center">Repo</TableCell>
         <TableCell />
       </TableRow>
