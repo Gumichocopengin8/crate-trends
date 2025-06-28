@@ -8,14 +8,15 @@ mod agent;
 use agent::generate_async_client;
 use anyhow::Result;
 use axum::{
+    Json, Router,
     extract::Path,
     http::{
+        HeaderValue, Method, StatusCode,
         header::{ACCEPT, AUTHORIZATION},
-        request, HeaderValue, Method, StatusCode,
+        request,
     },
     response::IntoResponse,
     routing::get,
-    Json, Router,
 };
 use std::time::Duration;
 use tower_http::{
