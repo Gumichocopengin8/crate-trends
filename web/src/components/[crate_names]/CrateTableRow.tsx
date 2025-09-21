@@ -107,7 +107,7 @@ const CrateTableRow = ({ crateData }: Props): JSX.Element => {
               <Typography variant="subtitle1" gutterBottom>
                 Description: {crateData.crate.description ?? '-'}
               </Typography>
-              <CrateSizeChart versionList={[...crateData.versions].reverse()} />
+              <CrateSizeChart versionList={crateData.versions.toReversed()} />
               <Typography variant="subtitle1" gutterBottom component="h3">
                 Versions:
               </Typography>
