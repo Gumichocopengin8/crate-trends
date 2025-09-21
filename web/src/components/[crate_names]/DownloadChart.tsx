@@ -69,7 +69,13 @@ const DownloadChart = ({ crateNames }: Props): JSX.Element => {
       { realtime: true, show: true, type: 'inside', zoomLock: true },
     ],
     tooltip: { trigger: 'axis' },
-    legend: { data: crateNames, type: 'scroll', padding: [8, 200, 0, 0], left: '10%' },
+    legend: {
+      data: crateNames,
+      type: 'scroll',
+      padding: [8, 200, 0, 0],
+      top: '3%',
+      left: '3%',
+    },
     toolbox: {
       feature: {
         dataZoom: { yAxisIndex: 'none' },
@@ -81,7 +87,12 @@ const DownloadChart = ({ crateNames }: Props): JSX.Element => {
     grid: { left: 80, right: 80 },
     xAxis: { type: 'category', boundaryGap: true, data: uniformedData.dates },
     yAxis: { type: 'value' },
-    series: uniformedData.data.map((d) => ({ data: d.downloads, name: d.name, type: 'line' })),
+    series: uniformedData.data.map((d) => ({
+      data: d.downloads,
+      name: d.name,
+      type: 'line',
+      emphasis: { scale: 1.25 },
+    })),
   };
 
   // TODO: remove this when swr supports React Suspense
