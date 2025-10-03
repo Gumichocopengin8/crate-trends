@@ -1,6 +1,6 @@
 let wasm;
 
-const heap = new Array(128).fill(undefined);
+let heap = new Array(128).fill(undefined);
 
 heap.push(undefined, null, true, false);
 
@@ -30,28 +30,18 @@ function getUint8ArrayMemory0() {
   return cachedUint8ArrayMemory0;
 }
 
-const cachedTextEncoder =
-  typeof TextEncoder !== 'undefined'
-    ? new TextEncoder('utf-8')
-    : {
-        encode: () => {
-          throw Error('TextEncoder not available');
-        },
-      };
+const cachedTextEncoder = new TextEncoder();
 
-const encodeString =
-  typeof cachedTextEncoder.encodeInto === 'function'
-    ? function (arg, view) {
-        return cachedTextEncoder.encodeInto(arg, view);
-      }
-    : function (arg, view) {
-        const buf = cachedTextEncoder.encode(arg);
-        view.set(buf);
-        return {
-          read: arg.length,
-          written: buf.length,
-        };
-      };
+if (!('encodeInto' in cachedTextEncoder)) {
+  cachedTextEncoder.encodeInto = function (arg, view) {
+    const buf = cachedTextEncoder.encode(arg);
+    view.set(buf);
+    return {
+      read: arg.length,
+      written: buf.length,
+    };
+  };
+}
 
 function passStringToWasm0(arg, malloc, realloc) {
   if (realloc === undefined) {
@@ -83,7 +73,7 @@ function passStringToWasm0(arg, malloc, realloc) {
     }
     ptr = realloc(ptr, len, (len = offset + arg.length * 3), 1) >>> 0;
     const view = getUint8ArrayMemory0().subarray(ptr + offset, ptr + len);
-    const ret = encodeString(arg, view);
+    const ret = cachedTextEncoder.encodeInto(arg, view);
 
     offset += ret.written;
     ptr = realloc(ptr, len, offset, 1) >>> 0;
@@ -110,32 +100,16 @@ function getDataViewMemory0() {
   return cachedDataViewMemory0;
 }
 
-let cachedTextDecoder =
-  typeof TextDecoder !== 'undefined'
-    ? new TextDecoder('utf-8', { ignoreBOM: true, fatal: true })
-    : {
-        decode: () => {
-          throw Error('TextDecoder not available');
-        },
-      };
+let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
 
-if (typeof TextDecoder !== 'undefined') {
-  cachedTextDecoder.decode();
-}
+cachedTextDecoder.decode();
 
 const MAX_SAFARI_DECODE_BYTES = 2146435072;
 let numBytesDecoded = 0;
 function decodeText(ptr, len) {
   numBytesDecoded += len;
   if (numBytesDecoded >= MAX_SAFARI_DECODE_BYTES) {
-    cachedTextDecoder =
-      typeof TextDecoder !== 'undefined'
-        ? new TextDecoder('utf-8', { ignoreBOM: true, fatal: true })
-        : {
-            decode: () => {
-              throw Error('TextDecoder not available');
-            },
-          };
+    cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
     cachedTextDecoder.decode();
     numBytesDecoded = len;
   }
@@ -230,23 +204,23 @@ async function __wbg_load(module, imports) {
 function __wbg_get_imports() {
   const imports = {};
   imports.wbg = {};
-  imports.wbg.__wbg_getTime_5b1dd03bb6d4b784 = function (arg0) {
+  imports.wbg.__wbg_getTime_6bb3f64e0f18f817 = function (arg0) {
     const ret = getObject(arg0).getTime();
     return ret;
   };
-  imports.wbg.__wbg_getTimezoneOffset_9b0741d5ee85cd60 = function (arg0) {
+  imports.wbg.__wbg_getTimezoneOffset_1e3ddc1382e7c8b0 = function (arg0) {
     const ret = getObject(arg0).getTimezoneOffset();
     return ret;
   };
-  imports.wbg.__wbg_new0_85cc856927102294 = function () {
+  imports.wbg.__wbg_new0_b0a0a38c201e6df5 = function () {
     const ret = new Date();
     return addHeapObject(ret);
   };
-  imports.wbg.__wbg_new_eb6fa6c1e9ac9fb7 = function (arg0) {
+  imports.wbg.__wbg_new_5a2ae4557f92b50e = function (arg0) {
     const ret = new Date(getObject(arg0));
     return addHeapObject(ret);
   };
-  imports.wbg.__wbg_wbindgenstringget_43fe05afe34b0cb1 = function (arg0, arg1) {
+  imports.wbg.__wbg_wbindgenstringget_0f16a6ddddef376f = function (arg0, arg1) {
     const obj = getObject(arg1);
     const ret = typeof obj === 'string' ? obj : undefined;
     var ptr1 = isLikeNone(ret) ? 0 : passStringToWasm0(ret, wasm.__wbindgen_export_0, wasm.__wbindgen_export_1);
@@ -254,7 +228,7 @@ function __wbg_get_imports() {
     getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
     getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
   };
-  imports.wbg.__wbg_wbindgenthrow_4c11a24fca429ccf = function (arg0, arg1) {
+  imports.wbg.__wbg_wbindgenthrow_451ec1a8469d7eb6 = function (arg0, arg1) {
     throw new Error(getStringFromWasm0(arg0, arg1));
   };
   imports.wbg.__wbindgen_cast_2241b6af4c4b2941 = function (arg0, arg1) {
