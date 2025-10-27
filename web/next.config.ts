@@ -21,12 +21,6 @@ const nextConfig: NextConfig = {
 
   transpilePackages: ['echarts', 'zrender'],
   reactStrictMode: true,
-
-  webpack(config, _options) {
-    config.experiments = { ...config.experiments, asyncWebAssembly: true };
-
-    return config;
-  },
 };
 
 export default nextConfig;

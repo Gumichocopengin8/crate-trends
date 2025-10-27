@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next --webpack",
-    "build": "next build --webpack",
+    "dev": "next",
+    "build": "next build",
     "build:wasm": "wasm-pack build src/web_assembly --target web --release",
     "start": "next start -p $PORT",
     "lint-app": "eslint './src/**/*.{ts,tsx}'",
