@@ -5,32 +5,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { NextConfig } from 'next';
+
 const isProd = process.env.ENVIRONMENT === 'product_env';
 
-module.exports = {
+const nextConfig: NextConfig = {
   compiler: {
     emotion: true,
   },
   distDir: './build',
-
   env: {
     BASE_URL: isProd ? process.env.BASE_URL : 'http://localhost:8080/api/v1',
     GOOGLE_ANALYTICS_TAG_ID: process.env.GOOGLE_ANALYTICS_TAG_ID ?? '',
   },
 
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
-
   transpilePackages: ['echarts', 'zrender'],
-
   reactStrictMode: true,
-
-  webpack(config, options) {
-    config.experiments = { ...config.experiments, asyncWebAssembly: true };
-
-    return config;
-  },
 };
+
+export default nextConfig;

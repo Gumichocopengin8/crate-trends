@@ -8,7 +8,8 @@ import globals from 'globals';
 export default [
   {
     // declare ignores in the beginning to make it effective
-    ignores: ['src/web_assembly/pkg/**/*', 'next-env.d.ts'],
+    // https://github.com/eslint/eslint/discussions/18304#discussioncomment-9069706
+    ignores: ['src/web_assembly/pkg/**/*', 'next-env.d.ts', 'next.config.ts'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
