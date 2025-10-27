@@ -69,7 +69,7 @@ fn app() -> Router {
                             || origin.as_bytes().ends_with(b".vercel.app")
                     },
                 ))
-                .allow_methods([Method::GET, Method::OPTIONS])
+                .allow_methods([Method::GET])
                 .allow_headers([AUTHORIZATION, ACCEPT])
                 .max_age(Duration::from_secs(60) * 5),
         )
