@@ -1,4 +1,4 @@
-FROM rust:1.90.0-slim-trixie AS builder
+FROM rust:1.92.0-slim-trixie AS builder
 RUN apt-get update && apt-get install -y pkg-config libssl-dev
 WORKDIR /app
 COPY . .
